@@ -1,43 +1,61 @@
-body {
-    margin: 60px auto;
-    width: 70%;
+button{
+    padding:30px 50px;
+    margin:10px;
+    font-size: 30px;
+    font-family: "PT Serif", "georgia", serif;
+    border: 1px solid black;
+    cursor:pointer;
+    background:#ffffff;    
 }
-nav ul, footer ul {
-    font-family:'Helvetica', 'Arial', 'Sans-Serif';
-    padding: 0px;
-    list-style: none;
+
+button:hover{
+    box-shadow: 0 0 10px 5px #aaaaaa;
+}
+
+.project-div{
+    border:1px solid #aaaaaa;
+    border-radius: 3px;
+    padding:20px;
+    box-shadow: 0px 0px 10px 5px #444444;
+    background: #ffffff;
+    font-size:17px;
+}
+
+
+.project-title{
+    font-size: 20px;
     font-weight: bold;
 }
-nav ul li, footer ul li {
-    display: inline;
-    margin-right: 20px;
-}
-a {
-    text-decoration: none;
-    color: #999;
-}
-a:hover {
-    text-decoration: underline;
-}
-h1 {
-    font-size: 3em;
-    font-family:'Helvetica', 'Arial', 'Sans-Serif';
-}
-p {
-    font-size: 1.5em;
-    line-height: 1.4em;
-    color: #333;
-}
-footer {
-    border-top: 1px solid #d5d5d5;
-    font-size: .8em;
+
+.project-desc{
+    margin-top:20px;
+    font-size: 17px;
 }
 
-ul.posts { 
-    margin: 20px auto 40px; 
-    font-size: 1.5em;
+.module{
+    padding-top:30px;
+    padding-bottom:20px;
+
 }
 
-ul.posts li {
-    list-style: none;
+.module-title{
+    background:#ffffff;
+    font-size:40px;
+    text-align:center;
+    margin: 20px;
+    border:1px solid #aaaaaa;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 5px #444444;
+}
+
+.module-subtitle{
+    background:#ffffff;
+    font-size:30px;
+    text-align:center;
+    margin: 30px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    border:1px solid #aaaaaa;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 5px #eeeeee;
 }

@@ -10,13 +10,13 @@
    html, body, nav, hgroup, section, article,  styles and stuff...
    ================================================================ */
 
-   html {
+  html {
     height: 100%;
   }
 
   body {
-    max-width: 1200px;
-    margin: 120px auto 0;
+    /*max-width: 1200px;*/
+    margin: 100px  0px 20px 0px;
     padding: 0 100px;
     background: #fff;
     font-family: "PT Serif", "georgia", serif;
@@ -31,51 +31,8 @@
     z-index: 2;
   }
 
-  #logo {
-    opacity: .4;
-    margin-bottom: 80px;
-  }
 
-  #left {
-    position: relative;
-    z-index: 2;
-  }
 
-  #currently {
-    margin-bottom: 60px;
-  }
-
-  #face {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-  }
-
-  @media screen and (max-height: 800px) {
-    #face {
-      bottom: auto;
-      top: 280px;
-    }
-  }
-
-  #face img {
-    height: auto;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-
-  @media screen and (max-width: 1340px) {
-    #face {
-      width: 70%;
-    }
-  }
-
-  @media screen and (max-width: 800px) {
-    #face {
-      width: auto;
-    }
-  }
 
   #links {
     position: fixed;
@@ -103,9 +60,8 @@
     margin: 0;
   }
 
-  .secondary-skill{
-    font-family: "adelle-sans",sans-serif;
-    font-size: 40px;
+  .secondary-skill{    
+    font-size: 42px;
     line-height: 54px;
     font-style: normal;
     font-weight: 250;
@@ -139,31 +95,33 @@
    =================================== */
 
    a {
-    color: #323233;
+    color: #009933;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
   }
 
   p > a {
-    color: #9B9B9B;
+    color: #009933;
     text-decoration: none;
   }
 
   a:visited {
-    color: #323233;
+    color: #009933;
   }
 
   p > a:visited {
-    color: #9B9B9B;
+    color: #009933;
   }
 
   a:hover {
     color: #F25B44;
+    text-decoration: none;
   }
 
   p > a:hover {
     color: #F25B44;
+    text-decoration: none;
   }
 
   a:active,
@@ -178,7 +136,7 @@
    @media screen and (max-width: 768px) {
 
     body {
-      margin: 80px auto auto 0;
+      margin: 0px auto auto 0;
       padding: 0 30px;
       overflow-x: hidden;
       -webkit-transition: all 0.2s ease-in-out;
@@ -190,10 +148,6 @@
       margin: 0 0 80px;
     }
 
-    #logo {
-      opacity: .4;
-      margin-bottom: 40px;
-    }
 
     h1 {
       font-size: 40px;
@@ -205,12 +159,5 @@
       margin-top: 80px;
     }
 
-    #face {
-      position: static;
-      text-align: center;
-      width: auto;
-      top: auto;
-      bottom: auto;
-    }
 
   }
