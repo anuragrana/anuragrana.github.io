@@ -8,8 +8,8 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-
+ 
+  <script type="text/javascript" src="js/main.js"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=PT+Serif" rel="stylesheet">
 
@@ -25,7 +25,7 @@
 </head>
 <body>
   <div id="main-module" class="module">
-    <div class="row project-div">
+    <div class="row">
       <div class="col-sm-8 col-md-8 col-xs-12">
         <div class="animated bounceInDown">    
           <h1 class="main-skill">Software Engineer.</h1>
@@ -43,14 +43,14 @@
     <div class="row" style="margin-top:50px;margin-bottom:20px;">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <a href="#contact-module">
-        <button class="center-block animated bounceInLeft">Hire Me</button>
-      </a>
+          <button class="center-block animated bounceInLeft">Hire Me</button>
+        </a>
       </div>
     </div>
   </div>
   
 
-  <div id="aboutme-module"  class="module" style="background:#ebfaeb;">
+  <div id="aboutme-module"  class="module" style="background:;">
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="module-title">About Me</div>
@@ -67,7 +67,7 @@
 
   <!-- timeline -->
 
-  <div id="Workexp-module" class="module" style="background:#ccccff;" >
+  <div id="Workexp-module" class="module" style="background:;" >
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="module-title">Timeline</div>
@@ -205,7 +205,7 @@
   </div>
   <!-- timeline ends -->
 
-  <div id="projects-module"  class="module" style="background:#ebfaeb;">
+  <div id="projects-module"  class="module" style="background:;">
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="module-title" style="">Hobby Projects</div>
@@ -292,8 +292,8 @@
     </div>
   </div>
 
-    
-  <div id="projects-module"  class="module" style="background:#ccccff;">
+
+  <div id="projects-module"  class="module" style="background:;">
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="module-title" style="">Academic Projects</div>
@@ -355,7 +355,7 @@
   </div>
 
 
-  <div id="blogs-module" class="module" style="background:#ebfaeb;" >
+  <div id="blogs-module" class="module" style="background:;" >
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="module-title">Blogs</div>
@@ -385,7 +385,7 @@
     </div>
   </div>
 
-  <div id="contact-module" class="module" style="background:#ccccff;" >
+  <div id="contact-module" class="module" style="background:;" >
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="module-title">Contact Me</div>
@@ -403,11 +403,17 @@
     <div class="row" style="margin:20px;">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="project-div">      
-          <div class="project-desc">
-            <form>
-              <input type="email" placeholder="Your Email ID Please." class="form-control" name="emailid" id="emailid" required="true"><br>
-              <textarea placeholder="Message" name="message" id="message" class="form-control" required="true"></textarea><br>
-              <input type="submit" value="Send Message Now" class="btn btn-primary btn-lg center-block">
+          <div class="project-desc"  style="margin: 0px 20px;">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <input type="email" placeholder="Your Email ID Please." class="form-control" name="emailid" id="emailid" required="true">
+              </div>
+              <div class="form-group">
+                <textarea placeholder="Message" name="message" id="message" class="form-control" required="true"></textarea>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Send Message Now" class="btn btn-primary btn-lg center-block">
+              </div>
             </form>
           </div>
         </div>
@@ -415,9 +421,22 @@
     </div>
   </div>
 
-
-
-
+<!-- child of the body tag -->
+<span id="top-link-block" class="hidden">
+    <a href="#main-module" class="well well-sm" onclick="$('html,body').animate({scrollTop:0},'slow');return false;" style="border:1px solid green;">
+        <i class="glyphicon glyphicon-chevron-up"></i> Top        
+    </a>
+</span><!-- /top-link-block -->
+<script>
+// Only enable if the document has a long scroll bar
+// Note the window height + offset
+if ( ($(window).height() + 100) < $(document).height() ) {
+    $('#top-link-block').removeClass('hidden').affix({
+        // how far to scroll down before link "slides" into view
+        offset: {top:100}
+    });
+}
+</script>
 </body>
 </html>
 
