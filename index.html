@@ -19,6 +19,9 @@
     <!-- Custom Stylesheets -->
     <link rel="stylesheet" href="css/animate.css"/>
     <link rel="stylesheet" href="css/reset.css"/>
+    <script>
+      document.getElementById('years').textContent = new Date().getFullYear() - 2015;
+    </script>
   </head>
   <body>
     <div class="container-fluid" style="padding-left: 15px;padding-right: 15px;border:0px solid black;">
@@ -31,7 +34,7 @@
               <div class="col-sm-6 col-md-6 col-xs-12 text-right" style="padding-bottom:20px;">
                 <div class="animated bounceInDown">
                   <div style="font-size:40px;">
-                    <div class="">11+ Years Of Experience</div>
+                    <div class=""><span id="years"></span> Years Of Experience</div>
                     <div class="">Back-End Engineer / System Design</div>
                     <div class="">Technical Architect @ InfoEdge (naukri.com)</div>
                     <div class="" style="margin-top:10px;">M.Tech CSE, IIIT Delhi, 2015</div>
