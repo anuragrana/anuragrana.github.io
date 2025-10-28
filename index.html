@@ -11,67 +11,62 @@
       padding: 0;
       background: #f8f9fa;
       color: #222;
-      line-height: 1.6;
+      line-height: 1.5;
     }
     .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 2rem;
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
     }
     header {
-      text-align: center;
-      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      margin-bottom: 1.5rem;
     }
     header img {
-      width: 160px;
+      width: 130px;
       height: auto;
       border-radius: 8px;
-      border: 2px solid #ddd;
-      box-shadow: 0 0 12px rgba(0,0,0,0.2);
-      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 6px rgba(0,0,0,0.15);
     }
-    header h1 {
-      margin: 0.5rem 0;
+    .intro h1 {
+      margin: 0 0 0.3rem 0;
       font-size: 1.8rem;
       font-weight: 600;
     }
-    header p {
-      margin: 0.3rem 0;
+    .intro p {
+      margin: 0.15rem 0;
       font-size: 1rem;
-      color: #555;
+      color: #444;
     }
     hr {
-      margin: 2rem 0;
+      margin: 1.4rem 0;
       border: none;
       border-top: 1px solid #ccc;
     }
-    .info {
-      text-align: center;
-      margin-bottom: 2rem;
+    section {
+      margin-bottom: 1.2rem;
     }
-    .info div {
-      margin: 0.4rem 0;
+    section strong {
+      display: inline-block;
+      margin-bottom: 0.4rem;
       font-size: 1.05rem;
     }
-    .links {
-      text-align: center;
-    }
-    .links a {
-      display: inline-block;
-      margin: 0.3rem 0.7rem;
+    a {
       text-decoration: none;
       color: #0066cc;
+      margin-right: 0.8rem;
       font-weight: 500;
-      transition: color 0.2s ease-in-out;
     }
-    .links a:hover {
+    a:hover {
       color: #004080;
     }
     footer {
-      text-align: center;
+      margin-top: 2rem;
       font-size: 0.9rem;
       color: #777;
-      margin-top: 2rem;
     }
   </style>
 </head>
@@ -79,28 +74,33 @@
   <div class="container">
     <header>
       <img src="assets/anuragrana2.jpg" alt="Anurag Rana">
-      <h1>Anurag Rana</h1>
-      <p>12 Years of Experience</p>
+      <div class="intro">
+        <h1>Anurag Rana</h1>
+        <p>Technical Architect @ InfoEdge (naukri.com)</p>
+        <p>12 Years Experience | M.Tech CSE, IIIT Delhi (2015)</p>
+        <p>Back-End Engineer | System Design | Distributed Systems</p>
+      </div>
     </header>
-
-    <div class="info">
-      <div>Back-End Engineer / System Design</div>
-      <div>Technical Architect @ InfoEdge (naukri.com)</div>
-      <div>M.Tech CSE, IIIT Delhi, 2015</div>
-    </div>
 
     <hr>
 
-    <div class="links">
-      <p><strong>Connect with me:</strong></p>
+    <section class="projects">
+      <strong>My Projects:</strong><br>
+      <a href="https://sites.google.com/view/code108labs-extensions/" target="_blank">Chrome Extensions</a>
+      <a href="https://anuragrana.in/pdf-editor-desktop-app/" target="_blank">PDF Editor (Desktop App)</a>
+    </section>
+
+    <hr>
+
+    <section class="links">
+      <strong>Connect with me:</strong><br>
       <a href="mailto:anuragrana31189@gmail.com">Email</a>
       <a href="https://github.com/anuragrana" target="_blank">GitHub</a>
       <a href="https://linkedin.com/in/anuragrana3/" target="_blank">LinkedIn</a>
       <a href="https://stackoverflow.com/users/2291289/anurag-rana" target="_blank">StackOverflow</a>
       <a href="https://blog.anuragrana.in" target="_blank">Blog</a>
       <a href="https://medium.com/@03A_R" target="_blank">Medium</a>
-      <a href="https://sites.google.com/view/code108labs-extensions/" target="_blank">Chrome Extensions</a>
-    </div>
+    </section>
 
     <footer>
       © 2025 Anurag Rana
