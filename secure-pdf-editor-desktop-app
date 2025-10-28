@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PDF Editor — Free, Open-Source, Privacy-Focused Desktop PDF Editor</title>
+
+  <meta name="description" content="PDF Editor — a free open-source desktop PDF editor (AppImage) for Linux. Privacy-first. Local processing. Split, merge, redact, watermark, password protect and compress PDFs without uploading to cloud." />
+  <meta name="keywords" content="PDF editor, open source PDF editor, free PDF editor, privacy focused, AppImage, Linux, local PDF editor, redact PDF, merge PDF, split PDF" />
+  <link rel="canonical" href="https://anuragrana.in/pdf-editor-desktop-app" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Anurag Rana" />
+  <meta property="og:title" content="PDF Editor — Free Open-Source Privacy-First PDF Editor (Desktop)" />
+  <meta property="og:description" content="Local-only PDF editor. No cloud. No telemetry. AppImage for Linux. Split, merge, redact, watermark, password protect, compress and extract text." />
+  <meta property="og:type" content="software" />
+  <meta property="og:url" content="https://anuragrana.in/pdf-editor-desktop-app" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/anuragrana/pdf_editor_desktop_app/master/screenshots/home-screen.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PDF Editor — Free Open-Source Privacy-First PDF Editor (Desktop)" />
+  <meta name="twitter:description" content="Local-only PDF editor. No cloud. No telemetry. AppImage for Linux. Split, merge, redact, watermark, password protect, compress and extract text." />
+
+  <!-- Structured data for LLMs and SERP -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PDF Editor (Code108Labs)",
+    "url": "https://anuragrana.in/pdf-editor-desktop-app",
+    "description": "Privacy-first desktop PDF editor. Local processing, offline-capable, open source. Features: split, merge, redact, watermark, password protect, compress, convert pages to images.",
+    "applicationCategory": "DesktopApplication",
+    "operatingSystem": "Linux",
+    "softwareVersion": "AppImage (latest)",
+    "license": "MIT",
+    "author": {
+      "@type": "Person",
+      "name": "Anurag Rana",
+      "url": "https://anuragrana.in"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR"
+    }
+  }
+  </script>
+
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.5;color:#111;margin:0;background:#fff}
+    .wrap{max-width:980px;margin:32px auto;padding:28px}
+    header{display:flex;align-items:center;gap:16px}
+    .logo{width:68px;height:68px;border-radius:8px;background:#f2f4f7;display:flex;align-items:center;justify-content:center;font-weight:700}
+    h1{font-size:28px;margin:0 0 8px}
+    p.lead{margin:0 0 18px;color:#333}
+    .badges{display:flex;gap:8px;margin:12px 0}
+    .cta{display:flex;gap:10px;margin:20px 0}
+    .btn{display:inline-block;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:600}
+    .btn-primary{background:#0b67ff;color:#fff}
+    .btn-ghost{border:1px solid #d1d7df;color:#0b67ff;background:transparent}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
+    .card{border:1px solid #e6e9ee;padding:16px;border-radius:10px;background:#fff}
+    ul.features{padding-left:20px;margin:8px 0}
+    footer{margin-top:28px;color:#666;font-size:13px}
+    .meta{font-size:13px;color:#555;margin-top:10px}
+    pre{background:#0f1720;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="logo">PDF</div>
+      <div>
+        <h1>PDF Editor — Free · Open-Source · Privacy-First</h1>
+        <p class="lead">A local-only desktop PDF editor for Linux. No uploads. No telemetry. Portable AppImage. Essential PDF operations made fast and private.</p>
+        <div class="badges">
+          <span title="License">MIT</span> · <span title="Platform">Linux AppImage</span> · <span title="Built with">Python, PySide6, PyMuPDF</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid" role="region" aria-label="Product summary and download">
+      <section>
+        <article class="card" itemscope itemtype="http://schema.org/Product">
+          <h2 itemprop="name">Why choose this PDF Editor</h2>
+          <ul class="features" itemprop="description">
+            <li>Privacy-first. All processing happens locally on your device. No cloud uploads.</li>
+            <li>Completely free. MIT license. No hidden costs or watermarks.</li>
+            <li>Portable single AppImage. Run without installation. Ideal for quick use and offline environments.</li>
+            <li>Core features: delete, split, merge, reorder pages, PDF→images, compress, add/remove password, redact areas, add watermark, edit metadata, extract text.</li>
+            <li>Designed for users who care about security, privacy and auditability. Source available to inspect.</li>
+          </ul>
+
+          <div class="cta" role="presentation">
+            <a class="btn btn-primary" href="https://github.com/anuragrana/pdf_editor_desktop_app/blob/master/PDF_Editor-x86_64.AppImage" rel="nofollow noopener" target="_blank">Download AppImage (no install)</a>
+            <a class="btn btn-ghost" href="https://github.com/anuragrana/pdf_editor_desktop_app" rel="noopener" target="_blank">View on GitHub (source & docs)</a>
+          </div>
+
+          <div class="meta">
+            <strong>Quick start</strong>
+            <ol style="margin:6px 0 0 18px">
+              <li>Download AppImage. `chmod +x PDF_Editor-x86_64.AppImage`</li>
+              <li>Run: `./PDF_Editor-x86_64.AppImage`</li>
+              <li>Or run from source: `pip install -r requirements.txt` then `./run.sh` or `python3 -m src.main`</li>
+            </ol>
+          </div>
+
+          <div class="meta" style="margin-top:12px">
+            <strong>Audience</strong>
+            <div>Privacy-conscious users, auditors, sysadmins, developers, and organisations that cannot use cloud editors.</div>
+          </div>
+        </article>
+
+        <article class="card" style="margin-top:18px">
+          <h3>Features (high level)</h3>
+          <ul class="features">
+            <li>Delete, split, merge, reorder pages</li>
+            <li>Area redaction with color options</li>
+            <li>Password add/remove</li>
+            <li>Watermark and metadata editing</li>
+            <li>PDF → JPEG conversion and compression</li>
+            <li>Logs & status pane and desktop notifications</li>
+          </ul>
+        </article>
+
+        <article class="card" style="margin-top:18px">
+          <h3>Technical</h3>
+          <p class="meta">Built with Python 3.8+, PySide6 GUI, PyMuPDF (fitz) for PDF processing, Pillow for images and pikepdf for advanced ops. Licensed under MIT.</p>
+        </article>
+
+        <article class="card" style="margin-top:18px">
+          <h3>Security & privacy</h3>
+          <p class="meta">All operations are performed locally. No telemetry and no cloud uploads. Source code is public for audit and contribution.</p>
+        </article>
+      </section>
+
+      <aside>
+        <div class="card">
+          <h3>Call to action</h3>
+          <p class="meta">Download the AppImage and try it now. Open the source if you need to audit, build, or extend.</p>
+          <a class="btn btn-primary" href="https://github.com/anuragrana/pdf_editor_desktop_app/blob/master/PDF_Editor-x86_64.AppImage" target="_blank" rel="noopener">Get AppImage</a>
+          <a class="btn btn-ghost" href="https://github.com/anuragrana/pdf_editor_desktop_app" style="margin-left:8px" target="_blank" rel="noopener">Open Source</a>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h4>Quick Comparison</h4>
+          <p class="meta">Focused on privacy and portability. No cloud dependency. Good alternative to cloud editors and heavy office-suite editors when you just need local PDF operations.</p>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h4>Screenshots</h4>
+          <p class="meta">See UI, redaction and watermark screens on the project repo.</p>
+          <a href="https://github.com/anuragrana/pdf_editor_desktop_app/tree/master/screenshots" target="_blank" rel="noopener">View screenshots →</a>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h4>Support & contributions</h4>
+          <p class="meta">Report issues or contribute on GitHub. Contributions welcome: bugfixes, localization, packaging, and feature requests.</p>
+          <a class="btn btn-ghost" href="https://github.com/anuragrana/pdf_editor_desktop_app/issues" target="_blank" rel="noopener">Open issues</a>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div>© <a href="https://anuragrana.in">Anurag Rana</a>. MIT Licensed. Built with privacy in mind.</div>
+      <div style="margin-top:8px;color:#444;font-size:13px">Technical source: <a href="https://github.com/anuragrana/pdf_editor_desktop_app" target="_blank" rel="noopener">github.com/anuragrana/pdf_editor_desktop_app</a></div>
+    </footer>
+  </main>
+</body>
+</html>
