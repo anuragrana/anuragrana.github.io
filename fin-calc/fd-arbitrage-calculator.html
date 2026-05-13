@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <title>FD vs Arbitrage Fund Calculator | Finance Calculators</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"]
+          },
+          boxShadow: {
+            soft: "0 18px 50px rgba(15, 23, 42, 0.08)"
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100">
+  <header class="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
+      <a href="index.html" class="rounded px-1 py-2 text-sm font-semibold text-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 dark:text-teal-400">← Home</a>
+      <button id="themeToggle" type="button" class="rounded border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 active:scale-[0.98] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900" aria-label="Toggle dark mode">
+        <span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+    <section class="mb-6">
+      <p class="mb-2 text-sm font-semibold uppercase tracking-wide text-teal-700 dark:text-teal-400">Post-tax comparison</p>
+      <h1 class="text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">FD vs Arbitrage Fund Calculator</h1>
+      <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">Compare yearly-taxed FD compounding with arbitrage fund growth after long-term capital gains tax.</p>
+    </section>
+
+    <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]">
+      <section class="rounded-lg border border-slate-200 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900 sm:p-6" aria-labelledby="calculatorTitle">
+        <h2 id="calculatorTitle" class="mb-5 text-lg font-semibold text-slate-950 dark:text-white">Investment inputs</h2>
+        <form id="calculatorForm" class="grid gap-4" novalidate>
+          <div>
+            <label for="amount" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Investment Amount (₹)</label>
+            <input id="amount" name="amount" type="number" inputmode="decimal" min="1" step="1000" value="500000" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+          </div>
+          <div>
+            <label for="years" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Investment Duration (years)</label>
+            <input id="years" name="years" type="number" inputmode="decimal" min="1" max="50" step="1" value="5" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="fdRate" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">FD Interest Rate (% annual)</label>
+              <input id="fdRate" name="fdRate" type="number" inputmode="decimal" min="0" max="30" step="0.1" value="7.2" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+            <div>
+              <label for="arbitrageRate" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Arbitrage Fund CAGR (% annual)</label>
+              <input id="arbitrageRate" name="arbitrageRate" type="number" inputmode="decimal" min="0" max="30" step="0.1" value="7.8" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+          </div>
+          <div>
+            <label for="taxSlab" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Income Tax Slab (%)</label>
+            <input id="taxSlab" name="taxSlab" type="number" inputmode="decimal" min="0" max="50" step="0.1" value="30" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+          </div>
+
+          <div id="errorBox" class="hidden rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-200" role="alert"></div>
+
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <button type="submit" class="rounded bg-teal-700 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 active:scale-[0.98]">Calculate</button>
+            <button id="resetButton" type="button" class="rounded border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 active:scale-[0.98] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="space-y-5">
+        <div id="winnerCard" class="rounded-lg border border-teal-200 bg-teal-50 p-4 shadow-soft dark:border-teal-900 dark:bg-teal-950">
+          <p class="text-xs font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">Better option</p>
+          <h2 id="winnerTitle" class="mt-1 text-xl font-bold text-teal-950 dark:text-teal-100">Calculate to compare</h2>
+          <p id="winnerSummary" class="mt-2 text-sm leading-6 text-teal-900 dark:text-teal-200">Enter assumptions and compare the final post-tax wealth.</p>
+        </div>
+
+        <div id="results" class="grid gap-3 sm:grid-cols-2" aria-live="polite"></div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900">
+          <div class="mb-3 flex items-center justify-between gap-3">
+            <h2 class="text-lg font-semibold text-slate-950 dark:text-white">Maturity comparison</h2>
+            <button id="shareButton" type="button" class="rounded border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Copy</button>
+          </div>
+          <div class="h-64">
+            <canvas id="comparisonChart" aria-label="FD and arbitrage maturity comparison chart" role="img"></canvas>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="mx-auto max-w-5xl px-4 pb-8 text-xs leading-5 text-slate-500 dark:text-slate-400 sm:px-6">
+    Tax rules are simplified for planning. Arbitrage fund calculation applies 12.5% LTCG on gains only.
+  </footer>
+
+  <script>
+    // Shared utility helpers for formatting, validation, rounding, and persistence.
+    var Utils = {
+      formatCurrency: function (value) {
+        return new Intl.NumberFormat("en-IN", {
+          style: "currency",
+          currency: "INR",
+          maximumFractionDigits: 0
+        }).format(Math.round(Number(value) || 0));
+      },
+      formatPercent: function (value) {
+        return (Math.round((Number(value) || 0) * 100) / 100).toFixed(2) + "%";
+      },
+      round: function (value, decimals) {
+        var factor = Math.pow(10, decimals || 0);
+        return Math.round((Number(value) || 0) * factor) / factor;
+      },
+      readNumber: function (id) {
+        return Number(document.getElementById(id).value);
+      },
+      validateRange: function (label, value, min, max) {
+        if (!Number.isFinite(value)) return label + " must be a valid number.";
+        if (value < min) return label + " must be at least " + min + ".";
+        if (value > max) return label + " must be no more than " + max + ".";
+        return "";
+      }
+    };
+
+    (function () {
+      var chart = null;
+      var lastResultText = "";
+      var storageKey = "fdArbitrageInputs";
+      var root = document.documentElement;
+      var form = document.getElementById("calculatorForm");
+      var errorBox = document.getElementById("errorBox");
+
+      function applyTheme(theme) {
+        root.classList.toggle("dark", theme === "dark");
+        document.getElementById("themeLabel").textContent = theme === "dark" ? "Light" : "Dark";
+        localStorage.setItem("financeCalculatorsTheme", theme);
+      }
+
+      function saveInputs(values) {
+        localStorage.setItem(storageKey, JSON.stringify(values));
+      }
+
+      function restoreInputs() {
+        var saved = localStorage.getItem(storageKey);
+        if (!saved) return;
+        try {
+          var values = JSON.parse(saved);
+          Object.keys(values).forEach(function (key) {
+            if (document.getElementById(key)) document.getElementById(key).value = values[key];
+          });
+        } catch (error) {
+          localStorage.removeItem(storageKey);
+        }
+      }
+
+      function getInputs() {
+        return {
+          amount: Utils.readNumber("amount"),
+          years: Utils.readNumber("years"),
+          fdRate: Utils.readNumber("fdRate"),
+          arbitrageRate: Utils.readNumber("arbitrageRate"),
+          taxSlab: Utils.readNumber("taxSlab")
+        };
+      }
+
+      function validateInputs(values) {
+        return [
+          Utils.validateRange("Investment amount", values.amount, 1, 10000000000),
+          Utils.validateRange("Investment duration", values.years, 1, 50),
+          Utils.validateRange("FD interest rate", values.fdRate, 0, 30),
+          Utils.validateRange("Arbitrage CAGR", values.arbitrageRate, 0, 30),
+          Utils.validateRange("Income tax slab", values.taxSlab, 0, 50)
+        ].filter(Boolean);
+      }
+
+      function calculate(values) {
+        var fdBalance = values.amount;
+        var fdTaxPaid = 0;
+        var fdRate = values.fdRate / 100;
+        var taxRate = values.taxSlab / 100;
+
+        // FD interest is taxed every year before reinvestment.
+        for (var year = 1; year <= Math.floor(values.years); year += 1) {
+          var interest = fdBalance * fdRate;
+          var tax = interest * taxRate;
+          fdTaxPaid += tax;
+          fdBalance += interest - tax;
+        }
+
+        // Handle a partial final year, if the user enters a decimal duration.
+        var partialYear = values.years - Math.floor(values.years);
+        if (partialYear > 0) {
+          var partialInterest = fdBalance * fdRate * partialYear;
+          var partialTax = partialInterest * taxRate;
+          fdTaxPaid += partialTax;
+          fdBalance += partialInterest - partialTax;
+        }
+
+        var arbitragePreTax = values.amount * Math.pow(1 + values.arbitrageRate / 100, values.years);
+        var arbitrageGain = Math.max(0, arbitragePreTax - values.amount);
+        var arbitrageTax = arbitrageGain * 0.125;
+        var arbitrageMaturity = arbitragePreTax - arbitrageTax;
+
+        return {
+          fdMaturity: fdBalance,
+          fdTaxPaid: fdTaxPaid,
+          arbitrageMaturity: arbitrageMaturity,
+          arbitrageTaxPaid: arbitrageTax,
+          difference: arbitrageMaturity - fdBalance
+        };
+      }
+
+      function resultTile(label, value, highlight) {
+        return '<article class="rounded-lg border ' + (highlight ? 'border-teal-300 bg-teal-50 dark:border-teal-800 dark:bg-teal-950' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900') + ' p-4 shadow-soft">' +
+          '<p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">' + label + '</p>' +
+          '<p class="mt-2 text-lg font-bold text-slate-950 dark:text-white">' + value + '</p>' +
+        '</article>';
+      }
+
+      function renderResults(values, result) {
+        var arbitrageWins = result.difference > 0;
+        var fdWins = result.difference < 0;
+        var winner = arbitrageWins ? "Arbitrage Fund" : fdWins ? "Fixed Deposit" : "Both are equal";
+        var absDifference = Math.abs(result.difference);
+
+        document.getElementById("winnerTitle").textContent = winner;
+        document.getElementById("winnerSummary").textContent = fdWins || arbitrageWins
+          ? winner + " is ahead by " + Utils.formatCurrency(absDifference) + " after " + values.years + " years."
+          : "Both options produce the same final wealth under these assumptions.";
+
+        document.getElementById("results").innerHTML =
+          resultTile("FD maturity amount", Utils.formatCurrency(result.fdMaturity), fdWins) +
+          resultTile("FD total tax paid", Utils.formatCurrency(result.fdTaxPaid), false) +
+          resultTile("Arbitrage maturity amount", Utils.formatCurrency(result.arbitrageMaturity), arbitrageWins) +
+          resultTile("Arbitrage tax paid", Utils.formatCurrency(result.arbitrageTaxPaid), false) +
+          resultTile("Difference in final wealth", Utils.formatCurrency(absDifference), true);
+
+        lastResultText = "FD maturity: " + Utils.formatCurrency(result.fdMaturity) +
+          "\nFD tax paid: " + Utils.formatCurrency(result.fdTaxPaid) +
+          "\nArbitrage maturity: " + Utils.formatCurrency(result.arbitrageMaturity) +
+          "\nArbitrage tax paid: " + Utils.formatCurrency(result.arbitrageTaxPaid) +
+          "\nBetter option: " + winner +
+          "\nDifference: " + Utils.formatCurrency(absDifference);
+      }
+
+      function renderChart(result) {
+        var ctx = document.getElementById("comparisonChart");
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ["Fixed Deposit", "Arbitrage Fund"],
+            datasets: [{
+              label: "Post-tax maturity value",
+              data: [Utils.round(result.fdMaturity, 0), Utils.round(result.arbitrageMaturity, 0)],
+              backgroundColor: ["#0f766e", "#059669"],
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    return Utils.formatCurrency(context.raw);
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function (value) {
+                    return Utils.formatCurrency(value);
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      function copyResultText(text) {
+        // Clipboard APIs can be unavailable in Android WebView or file:// pages.
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text);
+        }
+        return Promise.reject(new Error("Clipboard API unavailable"));
+      }
+
+      function submitCalculator(event) {
+        if (event) event.preventDefault();
+        var values = getInputs();
+        var errors = validateInputs(values);
+        if (errors.length) {
+          errorBox.textContent = errors[0];
+          errorBox.classList.remove("hidden");
+          return;
+        }
+        errorBox.classList.add("hidden");
+        saveInputs(values);
+        var result = calculate(values);
+        renderResults(values, result);
+        renderChart(result);
+      }
+
+      document.getElementById("themeToggle").addEventListener("click", function () {
+        applyTheme(root.classList.contains("dark") ? "light" : "dark");
+      });
+
+      document.getElementById("resetButton").addEventListener("click", function () {
+        localStorage.removeItem(storageKey);
+        form.reset();
+        submitCalculator();
+      });
+
+      document.getElementById("shareButton").addEventListener("click", function () {
+        if (!lastResultText) submitCalculator();
+        copyResultText(lastResultText).then(function () {
+          document.getElementById("shareButton").textContent = "Copied";
+          setTimeout(function () { document.getElementById("shareButton").textContent = "Copy"; }, 1400);
+        }).catch(function () {
+          alert(lastResultText);
+        });
+      });
+
+      form.addEventListener("submit", submitCalculator);
+
+      var savedTheme = localStorage.getItem("financeCalculatorsTheme");
+      var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      applyTheme(savedTheme || (prefersDark ? "dark" : "light"));
+      restoreInputs();
+      submitCalculator();
+    })();
+  </script>
+</body>
+</html>

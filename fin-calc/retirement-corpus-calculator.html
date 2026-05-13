@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <title>Retirement Corpus Calculator | Finance Calculators</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"]
+          },
+          boxShadow: {
+            soft: "0 18px 50px rgba(15, 23, 42, 0.08)"
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100">
+  <header class="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
+      <a href="index.html" class="rounded px-1 py-2 text-sm font-semibold text-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 dark:text-teal-400">← Home</a>
+      <button id="themeToggle" type="button" class="rounded border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 active:scale-[0.98] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900" aria-label="Toggle dark mode">
+        <span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+    <section class="mb-6">
+      <p class="mb-2 text-sm font-semibold uppercase tracking-wide text-teal-700 dark:text-teal-400">Retirement planning</p>
+      <h1 class="text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">Retirement Corpus Calculator</h1>
+      <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">Estimate your inflation-adjusted retirement expenses, target corpus, and monthly SIP needed before retirement.</p>
+    </section>
+
+    <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]">
+      <section class="rounded-lg border border-slate-200 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900 sm:p-6" aria-labelledby="calculatorTitle">
+        <h2 id="calculatorTitle" class="mb-5 text-lg font-semibold text-slate-950 dark:text-white">Retirement inputs</h2>
+        <form id="calculatorForm" class="grid gap-4" novalidate>
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div>
+              <label for="currentAge" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Current Age</label>
+              <input id="currentAge" type="number" inputmode="numeric" min="18" max="80" step="1" value="30" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+            <div>
+              <label for="retirementAge" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Retirement Age</label>
+              <input id="retirementAge" type="number" inputmode="numeric" min="30" max="90" step="1" value="60" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+            <div>
+              <label for="lifeExpectancy" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Life Expectancy</label>
+              <input id="lifeExpectancy" type="number" inputmode="numeric" min="50" max="110" step="1" value="85" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+          </div>
+
+          <div>
+            <label for="monthlyExpense" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Current Monthly Expenses (₹)</label>
+            <input id="monthlyExpense" type="number" inputmode="decimal" min="1" step="1000" value="60000" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div>
+              <label for="inflationRate" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Expected Inflation (%)</label>
+              <input id="inflationRate" type="number" inputmode="decimal" min="0" max="20" step="0.1" value="6" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+            <div>
+              <label for="preReturn" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Return Before Retirement (%)</label>
+              <input id="preReturn" type="number" inputmode="decimal" min="0" max="30" step="0.1" value="12" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+            <div>
+              <label for="postReturn" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Return After Retirement (%)</label>
+              <input id="postReturn" type="number" inputmode="decimal" min="0" max="25" step="0.1" value="7" class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+          </div>
+
+          <div id="errorBox" class="hidden rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-200" role="alert"></div>
+
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <button type="submit" class="rounded bg-teal-700 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 active:scale-[0.98]">Calculate</button>
+            <button id="resetButton" type="button" class="rounded border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 active:scale-[0.98] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="space-y-5">
+        <div class="rounded-lg border border-teal-200 bg-teal-50 p-4 shadow-soft dark:border-teal-900 dark:bg-teal-950">
+          <p class="text-xs font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">Planning insight</p>
+          <h2 id="insightTitle" class="mt-1 text-xl font-bold text-teal-950 dark:text-teal-100">Calculate your target</h2>
+          <p id="insightSummary" class="mt-2 text-sm leading-6 text-teal-900 dark:text-teal-200">Your corpus estimate will account for inflation and expected retirement duration.</p>
+        </div>
+
+        <div id="results" class="grid gap-3 sm:grid-cols-2" aria-live="polite"></div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900">
+          <div class="mb-3 flex items-center justify-between gap-3">
+            <h2 class="text-lg font-semibold text-slate-950 dark:text-white">SIP growth projection</h2>
+            <button id="shareButton" type="button" class="rounded border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Copy</button>
+          </div>
+          <div class="h-64">
+            <canvas id="growthChart" aria-label="Retirement growth projection line chart" role="img"></canvas>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="mx-auto max-w-5xl px-4 pb-8 text-xs leading-5 text-slate-500 dark:text-slate-400 sm:px-6">
+    This calculator uses simplified annual expense growth and monthly SIP compounding for planning estimates.
+  </footer>
+
+  <script>
+    // Shared utility helpers for formatting, validation, rounding, and persistence.
+    var Utils = {
+      formatCurrency: function (value) {
+        return new Intl.NumberFormat("en-IN", {
+          style: "currency",
+          currency: "INR",
+          maximumFractionDigits: 0
+        }).format(Math.round(Number(value) || 0));
+      },
+      formatPercent: function (value) {
+        return (Math.round((Number(value) || 0) * 100) / 100).toFixed(2) + "%";
+      },
+      round: function (value, decimals) {
+        var factor = Math.pow(10, decimals || 0);
+        return Math.round((Number(value) || 0) * factor) / factor;
+      },
+      readNumber: function (id) {
+        return Number(document.getElementById(id).value);
+      },
+      validateRange: function (label, value, min, max) {
+        if (!Number.isFinite(value)) return label + " must be a valid number.";
+        if (value < min) return label + " must be at least " + min + ".";
+        if (value > max) return label + " must be no more than " + max + ".";
+        return "";
+      }
+    };
+
+    (function () {
+      var chart = null;
+      var lastResultText = "";
+      var storageKey = "retirementCorpusInputs";
+      var root = document.documentElement;
+      var form = document.getElementById("calculatorForm");
+      var errorBox = document.getElementById("errorBox");
+
+      function applyTheme(theme) {
+        root.classList.toggle("dark", theme === "dark");
+        document.getElementById("themeLabel").textContent = theme === "dark" ? "Light" : "Dark";
+        localStorage.setItem("financeCalculatorsTheme", theme);
+      }
+
+      function saveInputs(values) {
+        localStorage.setItem(storageKey, JSON.stringify(values));
+      }
+
+      function restoreInputs() {
+        var saved = localStorage.getItem(storageKey);
+        if (!saved) return;
+        try {
+          var values = JSON.parse(saved);
+          Object.keys(values).forEach(function (key) {
+            if (document.getElementById(key)) document.getElementById(key).value = values[key];
+          });
+        } catch (error) {
+          localStorage.removeItem(storageKey);
+        }
+      }
+
+      function getInputs() {
+        return {
+          currentAge: Utils.readNumber("currentAge"),
+          retirementAge: Utils.readNumber("retirementAge"),
+          lifeExpectancy: Utils.readNumber("lifeExpectancy"),
+          monthlyExpense: Utils.readNumber("monthlyExpense"),
+          inflationRate: Utils.readNumber("inflationRate"),
+          preReturn: Utils.readNumber("preReturn"),
+          postReturn: Utils.readNumber("postReturn")
+        };
+      }
+
+      function validateInputs(values) {
+        var errors = [
+          Utils.validateRange("Current age", values.currentAge, 18, 80),
+          Utils.validateRange("Retirement age", values.retirementAge, 30, 90),
+          Utils.validateRange("Life expectancy", values.lifeExpectancy, 50, 110),
+          Utils.validateRange("Current monthly expenses", values.monthlyExpense, 1, 100000000),
+          Utils.validateRange("Expected inflation", values.inflationRate, 0, 20),
+          Utils.validateRange("Return before retirement", values.preReturn, 0, 30),
+          Utils.validateRange("Return after retirement", values.postReturn, 0, 25)
+        ].filter(Boolean);
+
+        if (values.retirementAge <= values.currentAge) errors.push("Retirement age must be greater than current age.");
+        if (values.lifeExpectancy <= values.retirementAge) errors.push("Life expectancy must be greater than retirement age.");
+        return errors;
+      }
+
+      function presentValueOfGrowingAnnuity(firstYearExpense, years, returnRate, inflationRate) {
+        // Corpus is the present value at retirement of inflation-growing annual withdrawals.
+        if (Math.abs(returnRate - inflationRate) < 0.000001) {
+          return firstYearExpense * years / (1 + returnRate);
+        }
+        return firstYearExpense * (1 - Math.pow((1 + inflationRate) / (1 + returnRate), years)) / (returnRate - inflationRate);
+      }
+
+      function calculateSip(targetCorpus, years, annualReturn) {
+        var months = years * 12;
+        var monthlyRate = annualReturn / 12;
+        if (months <= 0) return 0;
+        if (monthlyRate === 0) return targetCorpus / months;
+        return targetCorpus * monthlyRate / (Math.pow(1 + monthlyRate, months) - 1);
+      }
+
+      function calculate(values) {
+        var yearsToRetirement = values.retirementAge - values.currentAge;
+        var retirementYears = values.lifeExpectancy - values.retirementAge;
+        var inflation = values.inflationRate / 100;
+        var preReturn = values.preReturn / 100;
+        var postReturn = values.postReturn / 100;
+        var monthlyExpenseAtRetirement = values.monthlyExpense * Math.pow(1 + inflation, yearsToRetirement);
+        var firstYearRetirementExpense = monthlyExpenseAtRetirement * 12;
+        var corpusNeeded = presentValueOfGrowingAnnuity(firstYearRetirementExpense, retirementYears, postReturn, inflation);
+        var monthlySip = calculateSip(corpusNeeded, yearsToRetirement, preReturn);
+        var investedAmount = monthlySip * yearsToRetirement * 12;
+
+        return {
+          yearsToRetirement: yearsToRetirement,
+          retirementYears: retirementYears,
+          monthlyExpenseAtRetirement: monthlyExpenseAtRetirement,
+          annualExpenseAtRetirement: firstYearRetirementExpense,
+          corpusNeeded: corpusNeeded,
+          monthlySip: monthlySip,
+          investedAmount: investedAmount
+        };
+      }
+
+      function buildProjection(values, result) {
+        var labels = [];
+        var data = [];
+        var balance = 0;
+        var monthlyRate = (values.preReturn / 100) / 12;
+        var totalMonths = result.yearsToRetirement * 12;
+
+        // Project monthly SIP growth and sample each year for a readable line chart.
+        for (var month = 1; month <= totalMonths; month += 1) {
+          balance = balance * (1 + monthlyRate) + result.monthlySip;
+          if (month % 12 === 0 || month === totalMonths) {
+            labels.push(String(values.currentAge + Math.round(month / 12)));
+            data.push(Utils.round(balance, 0));
+          }
+        }
+        return { labels: labels, data: data };
+      }
+
+      function resultTile(label, value, highlight) {
+        return '<article class="rounded-lg border ' + (highlight ? 'border-teal-300 bg-teal-50 dark:border-teal-800 dark:bg-teal-950' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900') + ' p-4 shadow-soft">' +
+          '<p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">' + label + '</p>' +
+          '<p class="mt-2 text-lg font-bold text-slate-950 dark:text-white">' + value + '</p>' +
+        '</article>';
+      }
+
+      function renderResults(values, result) {
+        document.getElementById("insightTitle").textContent = Utils.formatCurrency(result.corpusNeeded);
+        document.getElementById("insightSummary").textContent = "Invest about " + Utils.formatCurrency(result.monthlySip) + " monthly for " + result.yearsToRetirement + " years to target this corpus.";
+
+        document.getElementById("results").innerHTML =
+          resultTile("Monthly expenses at retirement", Utils.formatCurrency(result.monthlyExpenseAtRetirement), false) +
+          resultTile("Required retirement corpus", Utils.formatCurrency(result.corpusNeeded), true) +
+          resultTile("Monthly SIP required", Utils.formatCurrency(result.monthlySip), true) +
+          resultTile("Years to retirement", result.yearsToRetirement + " years", false) +
+          resultTile("Estimated invested amount", Utils.formatCurrency(result.investedAmount), false);
+
+        lastResultText = "Monthly expenses at retirement: " + Utils.formatCurrency(result.monthlyExpenseAtRetirement) +
+          "\nRequired retirement corpus: " + Utils.formatCurrency(result.corpusNeeded) +
+          "\nMonthly SIP required: " + Utils.formatCurrency(result.monthlySip) +
+          "\nYears to retirement: " + result.yearsToRetirement +
+          "\nEstimated invested amount: " + Utils.formatCurrency(result.investedAmount);
+      }
+
+      function renderChart(values, result) {
+        var projection = buildProjection(values, result);
+        var ctx = document.getElementById("growthChart");
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: projection.labels,
+            datasets: [{
+              label: "Projected investment value",
+              data: projection.data,
+              borderColor: "#0f766e",
+              backgroundColor: "rgba(15, 118, 110, 0.14)",
+              fill: true,
+              tension: 0.25,
+              pointRadius: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: function (items) {
+                    return "Age " + items[0].label;
+                  },
+                  label: function (context) {
+                    return Utils.formatCurrency(context.raw);
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                title: { display: true, text: "Age" }
+              },
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function (value) {
+                    return Utils.formatCurrency(value);
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      function copyResultText(text) {
+        // Clipboard APIs can be unavailable in Android WebView or file:// pages.
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text);
+        }
+        return Promise.reject(new Error("Clipboard API unavailable"));
+      }
+
+      function submitCalculator(event) {
+        if (event) event.preventDefault();
+        var values = getInputs();
+        var errors = validateInputs(values);
+        if (errors.length) {
+          errorBox.textContent = errors[0];
+          errorBox.classList.remove("hidden");
+          return;
+        }
+        errorBox.classList.add("hidden");
+        saveInputs(values);
+        var result = calculate(values);
+        renderResults(values, result);
+        renderChart(values, result);
+      }
+
+      document.getElementById("themeToggle").addEventListener("click", function () {
+        applyTheme(root.classList.contains("dark") ? "light" : "dark");
+      });
+
+      document.getElementById("resetButton").addEventListener("click", function () {
+        localStorage.removeItem(storageKey);
+        form.reset();
+        submitCalculator();
+      });
+
+      document.getElementById("shareButton").addEventListener("click", function () {
+        if (!lastResultText) submitCalculator();
+        copyResultText(lastResultText).then(function () {
+          document.getElementById("shareButton").textContent = "Copied";
+          setTimeout(function () { document.getElementById("shareButton").textContent = "Copy"; }, 1400);
+        }).catch(function () {
+          alert(lastResultText);
+        });
+      });
+
+      form.addEventListener("submit", submitCalculator);
+
+      var savedTheme = localStorage.getItem("financeCalculatorsTheme");
+      var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      applyTheme(savedTheme || (prefersDark ? "dark" : "light"));
+      restoreInputs();
+      submitCalculator();
+    })();
+  </script>
+</body>
+</html>
