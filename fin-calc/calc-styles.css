@@ -1,0 +1,11 @@
+/* calc-styles.css – shared styles for Finance Calculators */
+
+/* Hide native number-input spinners; stepper buttons are the custom controls */
+input[type="number"].stepper-input::-webkit-outer-spin-button,
+input[type="number"].stepper-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"].stepper-input {
+  -moz-appearance: textfield;
+}

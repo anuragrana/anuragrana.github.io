@@ -11,8 +11,8 @@ var Utils = {
     var v = Math.round(Number(value) || 0);
     var sign = v < 0 ? "-" : "";
     var abs = Math.abs(v);
-    if (abs >= 1e7) return sign + "₹" + (abs / 1e7).toFixed(2) + " Cr";
-    if (abs >= 1e5) return sign + "₹" + (abs / 1e5).toFixed(2) + " L";
+    if (abs >= 1e7) return sign + "₹" + (abs / 1e7).toFixed(2) + " Crore";
+    if (abs >= 1e5) return sign + "₹" + (abs / 1e5).toFixed(2) + " Lac";
     return new Intl.NumberFormat("en-IN", {
       style: "currency", currency: "INR", maximumFractionDigits: 0
     }).format(v);
@@ -44,6 +44,22 @@ var Utils = {
     if (value < min) return label + " must be at least " + min + ".";
     if (value > max) return label + " must be at most " + max + ".";
     return "";
+  },
+
+  /* Inject a live compact-value hint below each input[data-hint="currency"] */
+  initHints: function (form) {
+    form.querySelectorAll("input[data-hint='currency']").forEach(function (input) {
+      var hint = document.createElement("p");
+      hint.className = "mt-1 min-h-[1rem] text-xs text-slate-400 dark:text-slate-500";
+      hint.setAttribute("aria-hidden", "true");
+      input.parentNode.insertBefore(hint, input.nextSibling);
+      function update() {
+        var val = parseFloat(input.value);
+        hint.textContent = (!isNaN(val) && Math.abs(val) >= 1000) ? Utils.formatCompact(val) : "";
+      }
+      input.addEventListener("input", update);
+      update();
+    });
   }
 };
 
@@ -192,5 +208,29 @@ var Calc = {
       if (balance >= target) return m;
     }
     return Infinity;
+  }
+};
+
+/* Stepper – wires up [data-step] buttons to their target inputs */
+var Stepper = {
+  init: function (form) {
+    form.querySelectorAll("[data-step]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var input = document.getElementById(this.dataset.target);
+        if (!input) return;
+        var step = parseFloat(this.dataset.step);
+        var current = parseFloat(input.value) || 0;
+        var min = parseFloat(input.min);
+        var max = parseFloat(input.max);
+        /* Integer arithmetic to avoid floating-point drift (e.g. 0.1+0.2=0.300...04) */
+        var dec = (step.toString().split(".")[1] || "").length;
+        var factor = Math.pow(10, dec);
+        var newVal = Math.round(current * factor + step * factor) / factor;
+        if (isFinite(min)) newVal = Math.max(min, newVal);
+        if (isFinite(max)) newVal = Math.min(max, newVal);
+        input.value = newVal;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+    });
   }
 };

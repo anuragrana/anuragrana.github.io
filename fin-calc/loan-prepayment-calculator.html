@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0f766e">
   <title>Loan Prepayment Calculator | Finance Calculators</title>
+  <link rel="stylesheet" href="calc-styles.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
@@ -41,28 +42,28 @@
 
           <div>
             <label for="outstanding" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Outstanding Loan Balance (₹)</label>
-            <input id="outstanding" type="number" inputmode="decimal" min="10000" max="500000000" step="10000" value="2000000"
+            <input id="outstanding" type="number" inputmode="decimal" min="10000" max="500000000" step="10000" value="2000000" data-hint="currency"
               class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
           </div>
 
           <div>
             <label for="emi" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Current Monthly EMI (₹)</label>
-            <input id="emi" type="number" inputmode="decimal" min="1000" max="10000000" step="500" value="18000"
+            <input id="emi" type="number" inputmode="decimal" min="1000" max="10000000" step="500" value="18000" data-hint="currency"
               class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
           </div>
 
           <div>
-            <div class="flex items-center justify-between mb-1">
-              <label for="rate" class="text-sm font-medium text-slate-700 dark:text-slate-200">Annual Interest Rate</label>
-              <span id="rateDisplay" class="text-sm font-bold text-teal-700 dark:text-teal-400">8.5%</span>
+            <label for="rate" class="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Annual Interest Rate <span class="font-normal text-slate-400">% p.a.</span></label>
+            <div class="flex items-stretch overflow-hidden rounded-lg border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-950">
+              <button type="button" class="w-12 flex-shrink-0 border-r border-slate-200 bg-slate-50 text-xl font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95 select-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" data-target="rate" data-step="-0.5">−</button>
+              <input id="rate" type="number" inputmode="decimal" min="1" max="30" step="0.5" value="8.5" class="stepper-input w-full bg-transparent py-3 text-center text-2xl font-bold text-teal-700 outline-none dark:text-teal-400">
+              <button type="button" class="w-12 flex-shrink-0 border-l border-slate-200 bg-slate-50 text-xl font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95 select-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" data-target="rate" data-step="0.5">+</button>
             </div>
-            <input id="rate" type="range" min="1" max="30" step="0.25" value="8.5" class="w-full accent-teal-700 cursor-pointer">
-            <div class="flex justify-between text-xs text-slate-400 mt-0.5"><span>1%</span><span>30%</span></div>
           </div>
 
           <div>
             <label for="extra" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Extra Monthly Payment (₹)</label>
-            <input id="extra" type="number" inputmode="decimal" min="500" max="10000000" step="500" value="5000"
+            <input id="extra" type="number" inputmode="decimal" min="500" max="10000000" step="500" value="5000" data-hint="currency"
               class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
           </div>
 
@@ -121,10 +122,6 @@
         localStorage.setItem("financeCalculatorsTheme", theme);
       }
 
-      function updateDisplays() {
-        document.getElementById("rateDisplay").textContent = parseFloat(document.getElementById("rate").value).toFixed(2) + "%";
-      }
-
       function saveInputs(v) { localStorage.setItem(storageKey, JSON.stringify(v)); }
 
       function restoreInputs() {
@@ -133,7 +130,6 @@
         try {
           var v = JSON.parse(saved);
           Object.keys(v).forEach(function (k) { var el = document.getElementById(k); if (el) el.value = v[k]; });
-          updateDisplays();
         } catch (e) { localStorage.removeItem(storageKey); }
       }
 
@@ -248,10 +244,9 @@
         renderChart(v, r);
       }
 
-      document.getElementById("rate").addEventListener("input", function () { document.getElementById("rateDisplay").textContent = parseFloat(this.value).toFixed(2) + "%"; });
       document.getElementById("themeToggle").addEventListener("click", function () { applyTheme(root.classList.contains("dark") ? "light" : "dark"); });
       document.getElementById("resetBtn").addEventListener("click", function () {
-        localStorage.removeItem(storageKey); form.reset(); updateDisplays(); recalculate();
+        localStorage.removeItem(storageKey); form.reset(); recalculate();
       });
       document.getElementById("shareBtn").addEventListener("click", function () {
         var btn = this;
@@ -260,6 +255,8 @@
           .catch(function () { alert(lastResultText); });
       });
 
+      Stepper.init(form);
+      Utils.initHints(form);
       form.addEventListener("submit", recalculate);
       form.addEventListener("input", recalculate);
 

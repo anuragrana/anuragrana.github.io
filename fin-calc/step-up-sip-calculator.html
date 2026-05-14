@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0f766e">
   <title>Step-Up SIP Calculator | Finance Calculators</title>
+  <link rel="stylesheet" href="calc-styles.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
@@ -41,35 +42,35 @@
 
           <div>
             <label for="monthly" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Starting Monthly SIP (₹)</label>
-            <input id="monthly" type="number" inputmode="decimal" min="500" max="10000000" step="500" value="5000"
+            <input id="monthly" type="number" inputmode="decimal" min="500" max="10000000" step="500" value="5000" data-hint="currency"
               class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
           </div>
 
           <div>
-            <div class="flex items-center justify-between mb-1">
-              <label for="stepUp" class="text-sm font-medium text-slate-700 dark:text-slate-200">Annual SIP Increase</label>
-              <span id="stepUpDisplay" class="text-sm font-bold text-teal-700 dark:text-teal-400">10%</span>
+            <label for="stepUp" class="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Annual SIP Increase <span class="font-normal text-slate-400">% per year</span></label>
+            <div class="flex items-stretch overflow-hidden rounded-lg border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-950">
+              <button type="button" class="w-12 flex-shrink-0 border-r border-slate-200 bg-slate-50 text-xl font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95 select-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" data-target="stepUp" data-step="-1">−</button>
+              <input id="stepUp" type="number" inputmode="numeric" min="0" max="50" step="1" value="10" class="stepper-input w-full bg-transparent py-3 text-center text-2xl font-bold text-teal-700 outline-none dark:text-teal-400">
+              <button type="button" class="w-12 flex-shrink-0 border-l border-slate-200 bg-slate-50 text-xl font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95 select-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" data-target="stepUp" data-step="1">+</button>
             </div>
-            <input id="stepUp" type="range" min="0" max="50" step="1" value="10" class="w-full accent-teal-700 cursor-pointer">
-            <div class="flex justify-between text-xs text-slate-400 mt-0.5"><span>0%</span><span>50%</span></div>
           </div>
 
           <div>
-            <div class="flex items-center justify-between mb-1">
-              <label for="rate" class="text-sm font-medium text-slate-700 dark:text-slate-200">Expected Annual Return</label>
-              <span id="rateDisplay" class="text-sm font-bold text-teal-700 dark:text-teal-400">12%</span>
+            <label for="rate" class="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Expected Annual Return <span class="font-normal text-slate-400">% p.a.</span></label>
+            <div class="flex items-stretch overflow-hidden rounded-lg border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-950">
+              <button type="button" class="w-12 flex-shrink-0 border-r border-slate-200 bg-slate-50 text-xl font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95 select-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" data-target="rate" data-step="-0.5">−</button>
+              <input id="rate" type="number" inputmode="decimal" min="1" max="30" step="0.5" value="12" class="stepper-input w-full bg-transparent py-3 text-center text-2xl font-bold text-teal-700 outline-none dark:text-teal-400">
+              <button type="button" class="w-12 flex-shrink-0 border-l border-slate-200 bg-slate-50 text-xl font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95 select-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" data-target="rate" data-step="0.5">+</button>
             </div>
-            <input id="rate" type="range" min="1" max="30" step="0.5" value="12" class="w-full accent-teal-700 cursor-pointer">
-            <div class="flex justify-between text-xs text-slate-400 mt-0.5"><span>1%</span><span>30%</span></div>
           </div>
 
           <div>
-            <div class="flex items-center justify-between mb-1">
-              <label for="years" class="text-sm font-medium text-slate-700 dark:text-slate-200">Duration</label>
-              <span id="yearsDisplay" class="text-sm font-bold text-teal-700 dark:text-teal-400">15 yrs</span>
+            <label for="years" class="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Duration <span class="font-normal text-slate-400">years</span></label>
+            <div class="flex items-stretch overflow-hidden rounded-lg border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-950">
+              <button type="button" class="w-12 flex-shrink-0 border-r border-slate-200 bg-slate-50 text-xl font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95 select-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" data-target="years" data-step="-1">−</button>
+              <input id="years" type="number" inputmode="numeric" min="1" max="40" step="1" value="15" class="stepper-input w-full bg-transparent py-3 text-center text-2xl font-bold text-teal-700 outline-none dark:text-teal-400">
+              <button type="button" class="w-12 flex-shrink-0 border-l border-slate-200 bg-slate-50 text-xl font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95 select-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" data-target="years" data-step="1">+</button>
             </div>
-            <input id="years" type="range" min="1" max="40" step="1" value="15" class="w-full accent-teal-700 cursor-pointer">
-            <div class="flex justify-between text-xs text-slate-400 mt-0.5"><span>1 yr</span><span>40 yrs</span></div>
           </div>
 
           <div id="errorBox" class="hidden rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-200" role="alert"></div>
@@ -127,12 +128,6 @@
         localStorage.setItem("financeCalculatorsTheme", theme);
       }
 
-      function updateDisplays() {
-        document.getElementById("stepUpDisplay").textContent = document.getElementById("stepUp").value + "%";
-        document.getElementById("rateDisplay").textContent = document.getElementById("rate").value + "%";
-        document.getElementById("yearsDisplay").textContent = document.getElementById("years").value + " yrs";
-      }
-
       function saveInputs(v) { localStorage.setItem(storageKey, JSON.stringify(v)); }
 
       function restoreInputs() {
@@ -141,7 +136,6 @@
         try {
           var v = JSON.parse(saved);
           Object.keys(v).forEach(function (k) { var el = document.getElementById(k); if (el) el.value = v[k]; });
-          updateDisplays();
         } catch (e) { localStorage.removeItem(storageKey); }
       }
 
@@ -239,12 +233,9 @@
         renderChart(v, r);
       }
 
-      document.getElementById("stepUp").addEventListener("input", function () { document.getElementById("stepUpDisplay").textContent = this.value + "%"; });
-      document.getElementById("rate").addEventListener("input", function () { document.getElementById("rateDisplay").textContent = this.value + "%"; });
-      document.getElementById("years").addEventListener("input", function () { document.getElementById("yearsDisplay").textContent = this.value + " yrs"; });
       document.getElementById("themeToggle").addEventListener("click", function () { applyTheme(root.classList.contains("dark") ? "light" : "dark"); });
       document.getElementById("resetBtn").addEventListener("click", function () {
-        localStorage.removeItem(storageKey); form.reset(); updateDisplays(); recalculate();
+        localStorage.removeItem(storageKey); form.reset(); recalculate();
       });
       document.getElementById("shareBtn").addEventListener("click", function () {
         var btn = this;
@@ -253,6 +244,8 @@
           .catch(function () { alert(lastResultText); });
       });
 
+      Stepper.init(form);
+      Utils.initHints(form);
       form.addEventListener("submit", recalculate);
       form.addEventListener("input", recalculate);
 
