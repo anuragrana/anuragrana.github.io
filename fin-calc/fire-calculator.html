@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <title>FIRE Calculator | Finance Calculators</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: { extend: {
+        fontFamily: { sans: ["Inter","ui-sans-serif","system-ui","-apple-system","BlinkMacSystemFont","Segoe UI","sans-serif"] },
+        boxShadow: { soft: "0 18px 50px rgba(15,23,42,0.08)" }
+      }}
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100">
+  <header class="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
+      <a href="index.html" class="rounded px-1 py-2 text-sm font-semibold text-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 dark:text-teal-400">← Home</a>
+      <button id="themeToggle" type="button" class="rounded border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 active:scale-[0.98] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900" aria-label="Toggle dark mode">
+        <span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+    <section class="mb-6">
+      <p class="mb-2 text-sm font-semibold uppercase tracking-wide text-teal-700 dark:text-teal-400">Financial independence</p>
+      <h1 class="text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">FIRE Calculator</h1>
+      <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">Find your Financial Independence number and how many years away you are from never needing to work again.</p>
+    </section>
+
+    <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]">
+      <section class="rounded-lg border border-slate-200 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+        <h2 class="mb-5 text-lg font-semibold text-slate-950 dark:text-white">Inputs</h2>
+        <form id="calcForm" class="grid gap-5" novalidate>
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="expenses" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Monthly Expenses (₹)</label>
+              <input id="expenses" type="number" inputmode="decimal" min="5000" max="10000000" step="1000" value="60000"
+                class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+            <div>
+              <label for="currentAge" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Current Age</label>
+              <input id="currentAge" type="number" inputmode="numeric" min="18" max="70" step="1" value="30"
+                class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+            </div>
+          </div>
+
+          <div>
+            <label for="savings" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Current Savings / Investments (₹)</label>
+            <input id="savings" type="number" inputmode="decimal" min="0" max="1000000000" step="10000" value="500000"
+              class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+          </div>
+
+          <div>
+            <label for="monthly" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Monthly Investment (₹)</label>
+            <input id="monthly" type="number" inputmode="decimal" min="1000" max="10000000" step="1000" value="30000"
+              class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label for="rate" class="text-sm font-medium text-slate-700 dark:text-slate-200">Expected Annual Return</label>
+              <span id="rateDisplay" class="text-sm font-bold text-teal-700 dark:text-teal-400">12%</span>
+            </div>
+            <input id="rate" type="range" min="4" max="20" step="0.5" value="12" class="w-full accent-teal-700 cursor-pointer">
+            <div class="flex justify-between text-xs text-slate-400 mt-0.5"><span>4%</span><span>20%</span></div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label for="inflation" class="text-sm font-medium text-slate-700 dark:text-slate-200">Expected Inflation (for withdrawal rate)</label>
+              <span id="inflationDisplay" class="text-sm font-bold text-teal-700 dark:text-teal-400">6%</span>
+            </div>
+            <input id="inflation" type="range" min="2" max="12" step="0.5" value="6" class="w-full accent-teal-700 cursor-pointer">
+            <div class="flex justify-between text-xs text-slate-400 mt-0.5"><span>2%</span><span>12%</span></div>
+          </div>
+
+          <div id="errorBox" class="hidden rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-200" role="alert"></div>
+
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="submit" class="rounded bg-teal-700 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 active:scale-[0.98]">Calculate</button>
+            <button id="resetBtn" type="button" class="rounded border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 active:scale-[0.98] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="space-y-4">
+        <div class="rounded-lg border border-teal-200 bg-teal-50 p-4 shadow-soft dark:border-teal-900 dark:bg-teal-950">
+          <p class="text-xs font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">FIRE target corpus</p>
+          <p id="summaryValue" class="mt-1 text-3xl font-bold text-teal-950 dark:text-teal-100">—</p>
+          <p id="summaryText" class="mt-1.5 text-sm leading-5 text-teal-900 dark:text-teal-200">The corpus that lets your money work for you permanently.</p>
+        </div>
+
+        <div id="results" class="grid gap-3 sm:grid-cols-2" aria-live="polite"></div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900">
+          <div class="mb-3 flex items-center justify-between gap-3">
+            <h2 class="text-base font-semibold text-slate-950 dark:text-white">Journey to FIRE</h2>
+            <button id="shareBtn" type="button" class="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Copy</button>
+          </div>
+          <div class="h-56">
+            <canvas id="mainChart" role="img" aria-label="FIRE journey chart"></canvas>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-slate-100 bg-slate-50 p-4 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400">
+          <strong class="text-slate-700 dark:text-slate-200">How it's calculated:</strong> FIRE corpus = Annual expenses ÷ (Return% − Inflation%). This is the real-return safe withdrawal rate — the corpus size where investment growth covers your expenses forever.
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="mx-auto max-w-5xl px-4 pb-8 text-xs leading-5 text-slate-500 dark:text-slate-400 sm:px-6">
+    FIRE is a simplified estimate. Sequence-of-returns risk, lifestyle inflation, and taxes can affect actual outcomes.
+  </footer>
+
+  <script src="calc-engine.js"></script>
+  <script>
+    (function () {
+      var chart = null;
+      var lastResultText = "";
+      var storageKey = "fireCalcInputs";
+      var root = document.documentElement;
+      var form = document.getElementById("calcForm");
+      var errorBox = document.getElementById("errorBox");
+
+      function applyTheme(theme) {
+        root.classList.toggle("dark", theme === "dark");
+        document.getElementById("themeLabel").textContent = theme === "dark" ? "Light" : "Dark";
+        localStorage.setItem("financeCalculatorsTheme", theme);
+      }
+
+      function updateDisplays() {
+        document.getElementById("rateDisplay").textContent = document.getElementById("rate").value + "%";
+        document.getElementById("inflationDisplay").textContent = document.getElementById("inflation").value + "%";
+      }
+
+      function saveInputs(v) { localStorage.setItem(storageKey, JSON.stringify(v)); }
+
+      function restoreInputs() {
+        var saved = localStorage.getItem(storageKey);
+        if (!saved) return;
+        try {
+          var v = JSON.parse(saved);
+          Object.keys(v).forEach(function (k) { var el = document.getElementById(k); if (el) el.value = v[k]; });
+          updateDisplays();
+        } catch (e) { localStorage.removeItem(storageKey); }
+      }
+
+      function getInputs() {
+        return {
+          expenses: Utils.readNumber("expenses"),
+          currentAge: Utils.readNumber("currentAge"),
+          savings: Utils.readNumber("savings"),
+          monthly: Utils.readNumber("monthly"),
+          rate: Utils.readNumber("rate"),
+          inflation: Utils.readNumber("inflation")
+        };
+      }
+
+      function validate(v) {
+        var errs = [
+          Utils.validateRange("Monthly expenses", v.expenses, 5000, 10000000),
+          Utils.validateRange("Current age", v.currentAge, 18, 70),
+          Utils.validateRange("Current savings", v.savings, 0, 1000000000),
+          Utils.validateRange("Monthly investment", v.monthly, 1000, 10000000),
+          Utils.validateRange("Annual return", v.rate, 4, 20),
+          Utils.validateRange("Inflation", v.inflation, 2, 12)
+        ].filter(Boolean);
+        if (!errs.length && v.rate <= v.inflation) errs.push("Return must be greater than inflation for FIRE to be achievable.");
+        return errs;
+      }
+
+      function calculate(v) {
+        var fireCorpus = Calc.fireCorpus(v.expenses, v.rate, v.inflation);
+        var fireMonths = Calc.fireMonths(fireCorpus, v.savings, v.monthly, v.rate);
+        var fireYears = isFinite(fireMonths) ? fireMonths / 12 : Infinity;
+        var retirementAge = isFinite(fireYears) ? v.currentAge + fireYears : Infinity;
+        var savingsRate = v.monthly / (v.monthly + v.expenses) * 100;
+        return { fireCorpus: fireCorpus, fireMonths: fireMonths, fireYears: fireYears, retirementAge: retirementAge, savingsRate: savingsRate };
+      }
+
+      function tile(label, value, highlight) {
+        return '<article class="rounded-lg border ' +
+          (highlight ? 'border-teal-300 bg-teal-50 dark:border-teal-800 dark:bg-teal-950' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900') +
+          ' p-4 shadow-soft"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">' +
+          label + '</p><p class="mt-2 text-xl font-bold text-slate-950 dark:text-white">' + value + '</p></article>';
+      }
+
+      function renderResults(v, r) {
+        document.getElementById("summaryValue").textContent = Utils.formatCompact(r.fireCorpus);
+        var yearsText = isFinite(r.fireYears) ? r.fireYears.toFixed(1) + " years" : "100+ years";
+        var ageText = isFinite(r.retirementAge) ? Math.ceil(r.retirementAge) : "—";
+        document.getElementById("summaryText").textContent =
+          "Reach this corpus and your investments cover your ₹" + v.expenses.toLocaleString("en-IN") + "/mo expenses forever.";
+
+        document.getElementById("results").innerHTML =
+          tile("FIRE corpus target", Utils.formatCompact(r.fireCorpus), true) +
+          tile("Years to FIRE", yearsText, false) +
+          tile("Estimated FIRE age", isFinite(r.retirementAge) ? Math.ceil(r.retirementAge) + " years" : "—", false) +
+          tile("Savings rate", r.savingsRate.toFixed(1) + "%", false);
+
+        lastResultText = "FIRE Calculator\nMonthly expenses: " + Utils.formatCurrency(v.expenses) +
+          "\nCurrent savings: " + Utils.formatCurrency(v.savings) +
+          "\nMonthly investment: " + Utils.formatCurrency(v.monthly) +
+          "\nReturn: " + v.rate + "% | Inflation: " + v.inflation + "%" +
+          "\nFIRE corpus target: " + Utils.formatCurrency(r.fireCorpus) +
+          "\nYears to FIRE: " + yearsText +
+          "\nFIRE age: " + ageText;
+      }
+
+      function renderChart(v, r) {
+        if (!isFinite(r.fireYears)) return;
+        var displayYears = Math.ceil(r.fireYears) + 3;
+        var labels = [], balData = [], targetData = [];
+        var rMonthly = v.rate / 12 / 100;
+        var bal = v.savings;
+        for (var y = 0; y <= displayYears; y++) {
+          labels.push(y === 0 ? "Now" : "Yr " + y);
+          balData.push(Utils.round(bal, 0));
+          targetData.push(Utils.round(r.fireCorpus, 0));
+          for (var m = 0; m < 12; m++) {
+            bal = bal * (1 + rMonthly) + v.monthly;
+          }
+        }
+        var ctx = document.getElementById("mainChart");
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [
+              { label: "Your growing wealth", data: balData, borderColor: "#0f766e", backgroundColor: "rgba(15,118,110,0.12)", fill: true, tension: 0.3, pointRadius: displayYears > 20 ? 0 : 2 },
+              { label: "FIRE target", data: targetData, borderColor: "#f59e0b", borderDash: [6, 3], backgroundColor: "transparent", tension: 0, pointRadius: 0 }
+            ]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: function (c) { return c.dataset.label + ": " + Utils.formatCurrency(c.raw); } } }
+            },
+            scales: { y: { beginAtZero: false, ticks: { callback: function (v) { return Utils.formatCompact(v); } } } }
+          }
+        });
+      }
+
+      function recalculate(e) {
+        if (e && e.type === "submit") e.preventDefault();
+        var v = getInputs();
+        var errs = validate(v);
+        if (errs.length) { errorBox.textContent = errs[0]; errorBox.classList.remove("hidden"); return; }
+        errorBox.classList.add("hidden");
+        saveInputs(v);
+        var r = calculate(v);
+        renderResults(v, r);
+        renderChart(v, r);
+      }
+
+      document.getElementById("rate").addEventListener("input", function () { document.getElementById("rateDisplay").textContent = this.value + "%"; });
+      document.getElementById("inflation").addEventListener("input", function () { document.getElementById("inflationDisplay").textContent = this.value + "%"; });
+      document.getElementById("themeToggle").addEventListener("click", function () { applyTheme(root.classList.contains("dark") ? "light" : "dark"); });
+      document.getElementById("resetBtn").addEventListener("click", function () {
+        localStorage.removeItem(storageKey); form.reset(); updateDisplays(); recalculate();
+      });
+      document.getElementById("shareBtn").addEventListener("click", function () {
+        var btn = this;
+        var p = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(lastResultText) : Promise.reject();
+        p.then(function () { btn.textContent = "Copied!"; setTimeout(function () { btn.textContent = "Copy"; }, 1500); })
+          .catch(function () { alert(lastResultText); });
+      });
+
+      form.addEventListener("submit", recalculate);
+      form.addEventListener("input", recalculate);
+
+      var savedTheme = localStorage.getItem("financeCalculatorsTheme");
+      applyTheme(savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+      restoreInputs();
+      recalculate();
+    })();
+  </script>
+</body>
+</html>

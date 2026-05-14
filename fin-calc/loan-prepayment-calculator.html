@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <title>Loan Prepayment Calculator | Finance Calculators</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: { extend: {
+        fontFamily: { sans: ["Inter","ui-sans-serif","system-ui","-apple-system","BlinkMacSystemFont","Segoe UI","sans-serif"] },
+        boxShadow: { soft: "0 18px 50px rgba(15,23,42,0.08)" }
+      }}
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100">
+  <header class="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
+      <a href="index.html" class="rounded px-1 py-2 text-sm font-semibold text-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 dark:text-teal-400">← Home</a>
+      <button id="themeToggle" type="button" class="rounded border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 active:scale-[0.98] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900" aria-label="Toggle dark mode">
+        <span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+    <section class="mb-6">
+      <p class="mb-2 text-sm font-semibold uppercase tracking-wide text-teal-700 dark:text-teal-400">Debt planning</p>
+      <h1 class="text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">Loan Prepayment Calculator</h1>
+      <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">See how much interest you save and how many months sooner you can become debt-free by paying extra.</p>
+    </section>
+
+    <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]">
+      <section class="rounded-lg border border-slate-200 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+        <h2 class="mb-5 text-lg font-semibold text-slate-950 dark:text-white">Inputs</h2>
+        <form id="calcForm" class="grid gap-5" novalidate>
+
+          <div>
+            <label for="outstanding" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Outstanding Loan Balance (₹)</label>
+            <input id="outstanding" type="number" inputmode="decimal" min="10000" max="500000000" step="10000" value="2000000"
+              class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+          </div>
+
+          <div>
+            <label for="emi" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Current Monthly EMI (₹)</label>
+            <input id="emi" type="number" inputmode="decimal" min="1000" max="10000000" step="500" value="18000"
+              class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label for="rate" class="text-sm font-medium text-slate-700 dark:text-slate-200">Annual Interest Rate</label>
+              <span id="rateDisplay" class="text-sm font-bold text-teal-700 dark:text-teal-400">8.5%</span>
+            </div>
+            <input id="rate" type="range" min="1" max="30" step="0.25" value="8.5" class="w-full accent-teal-700 cursor-pointer">
+            <div class="flex justify-between text-xs text-slate-400 mt-0.5"><span>1%</span><span>30%</span></div>
+          </div>
+
+          <div>
+            <label for="extra" class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200">Extra Monthly Payment (₹)</label>
+            <input id="extra" type="number" inputmode="decimal" min="500" max="10000000" step="500" value="5000"
+              class="w-full rounded border border-slate-300 bg-white px-3 py-3 text-base outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-teal-950">
+          </div>
+
+          <div id="errorBox" class="hidden rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-200" role="alert"></div>
+
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="submit" class="rounded bg-teal-700 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 active:scale-[0.98]">Calculate</button>
+            <button id="resetBtn" type="button" class="rounded border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 active:scale-[0.98] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="space-y-4">
+        <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4 shadow-soft dark:border-emerald-900 dark:bg-emerald-950">
+          <p class="text-xs font-semibold uppercase tracking-wide text-emerald-800 dark:text-emerald-300">Interest saved</p>
+          <p id="summaryValue" class="mt-1 text-3xl font-bold text-emerald-950 dark:text-emerald-100">—</p>
+          <p id="summaryText" class="mt-1.5 text-sm leading-5 text-emerald-900 dark:text-emerald-200">Enter loan details and extra payment to calculate savings.</p>
+        </div>
+
+        <div id="results" class="grid gap-3 sm:grid-cols-2" aria-live="polite"></div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900">
+          <div class="mb-3 flex items-center justify-between gap-3">
+            <h2 class="text-base font-semibold text-slate-950 dark:text-white">Balance comparison</h2>
+            <button id="shareBtn" type="button" class="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Copy</button>
+          </div>
+          <div class="h-52">
+            <canvas id="mainChart" role="img" aria-label="Loan balance with and without prepayment"></canvas>
+          </div>
+          <div class="mt-2 flex items-center gap-4 text-xs text-slate-500">
+            <span class="flex items-center gap-1"><span class="inline-block h-2 w-3 rounded-sm bg-teal-600"></span>With extra payment</span>
+            <span class="flex items-center gap-1"><span class="inline-block h-2 w-3 rounded-sm bg-slate-400"></span>Original schedule</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="mx-auto max-w-5xl px-4 pb-8 text-xs leading-5 text-slate-500 dark:text-slate-400 sm:px-6">
+    Calculation assumes extra payment fully reduces principal. Check with your lender for prepayment penalties.
+  </footer>
+
+  <script src="calc-engine.js"></script>
+  <script>
+    (function () {
+      var chart = null;
+      var lastResultText = "";
+      var storageKey = "prepayCalcInputs";
+      var root = document.documentElement;
+      var form = document.getElementById("calcForm");
+      var errorBox = document.getElementById("errorBox");
+
+      function applyTheme(theme) {
+        root.classList.toggle("dark", theme === "dark");
+        document.getElementById("themeLabel").textContent = theme === "dark" ? "Light" : "Dark";
+        localStorage.setItem("financeCalculatorsTheme", theme);
+      }
+
+      function updateDisplays() {
+        document.getElementById("rateDisplay").textContent = parseFloat(document.getElementById("rate").value).toFixed(2) + "%";
+      }
+
+      function saveInputs(v) { localStorage.setItem(storageKey, JSON.stringify(v)); }
+
+      function restoreInputs() {
+        var saved = localStorage.getItem(storageKey);
+        if (!saved) return;
+        try {
+          var v = JSON.parse(saved);
+          Object.keys(v).forEach(function (k) { var el = document.getElementById(k); if (el) el.value = v[k]; });
+          updateDisplays();
+        } catch (e) { localStorage.removeItem(storageKey); }
+      }
+
+      function getInputs() {
+        return {
+          outstanding: Utils.readNumber("outstanding"),
+          emi: Utils.readNumber("emi"),
+          rate: Utils.readNumber("rate"),
+          extra: Utils.readNumber("extra")
+        };
+      }
+
+      function validate(v) {
+        var r = v.rate / 12 / 100;
+        var errs = [
+          Utils.validateRange("Outstanding balance", v.outstanding, 10000, 500000000),
+          Utils.validateRange("Monthly EMI", v.emi, 1000, 10000000),
+          Utils.validateRange("Interest rate", v.rate, 1, 30),
+          Utils.validateRange("Extra payment", v.extra, 500, 10000000)
+        ].filter(Boolean);
+        if (!errs.length && v.emi <= v.outstanding * r) {
+          errs.push("EMI (" + Utils.formatCurrency(v.emi) + ") is too low — it doesn't even cover the monthly interest (" + Utils.formatCurrency(v.outstanding * r) + "). Please increase it.");
+        }
+        return errs;
+      }
+
+      function tile(label, value, highlight, accent) {
+        var cls = highlight
+          ? (accent === "green" ? 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950' : 'border-teal-300 bg-teal-50 dark:border-teal-800 dark:bg-teal-950')
+          : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900';
+        return '<article class="rounded-lg border ' + cls +
+          ' p-4 shadow-soft"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">' +
+          label + '</p><p class="mt-2 text-xl font-bold text-slate-950 dark:text-white">' + value + '</p></article>';
+      }
+
+      function renderResults(v, r) {
+        if (!r) {
+          errorBox.textContent = "Unable to calculate — the EMI may be too low to clear the loan.";
+          errorBox.classList.remove("hidden");
+          return;
+        }
+        document.getElementById("summaryValue").textContent = Utils.formatCompact(r.interestSaved);
+        document.getElementById("summaryText").textContent =
+          "Pay " + Utils.formatCurrency(v.extra) + " extra/mo to save " + Utils.formatCompact(r.interestSaved) + " and close " + Utils.formatYears(r.savedMonths) + " early";
+
+        document.getElementById("results").innerHTML =
+          tile("Interest saved", Utils.formatCompact(r.interestSaved), true, "green") +
+          tile("Months saved", Utils.formatYears(r.savedMonths), false) +
+          tile("Original payoff", Utils.formatYears(r.origMonths), false) +
+          tile("New payoff", Utils.formatYears(r.newMonths), true);
+
+        lastResultText = "Loan Prepayment Calculator\nOutstanding: " + Utils.formatCurrency(v.outstanding) +
+          "\nEMI: " + Utils.formatCurrency(v.emi) + " | Rate: " + v.rate + "%" +
+          "\nExtra payment: " + Utils.formatCurrency(v.extra) + "/mo" +
+          "\nInterest saved: " + Utils.formatCurrency(r.interestSaved) +
+          "\nTime saved: " + Utils.formatYears(r.savedMonths) +
+          "\nOriginal payoff: " + Utils.formatYears(r.origMonths) +
+          "\nNew payoff: " + Utils.formatYears(r.newMonths);
+      }
+
+      function balanceSchedule(outstanding, emi, rate, maxMonths) {
+        var r = rate / 12 / 100;
+        var bal = outstanding;
+        var data = [Utils.round(bal, 0)];
+        for (var m = 0; m < maxMonths && bal > 0.5; m++) {
+          bal -= (emi - bal * r);
+          data.push(Utils.round(Math.max(0, bal), 0));
+        }
+        return data;
+      }
+
+      function renderChart(v, r) {
+        if (!r) return;
+        var maxMonths = r.origMonths;
+        var labels = [];
+        for (var i = 0; i <= maxMonths; i++) labels.push(i === 0 ? "Now" : (i % 12 === 0 ? "Yr " + (i / 12) : ""));
+
+        var origData = balanceSchedule(v.outstanding, v.emi, v.rate, maxMonths);
+        var newData = balanceSchedule(v.outstanding, v.emi + v.extra, v.rate, maxMonths);
+
+        var ctx = document.getElementById("mainChart");
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [
+              { label: "With extra payment", data: newData, borderColor: "#0f766e", backgroundColor: "rgba(15,118,110,0.1)", fill: true, tension: 0.2, pointRadius: 0 },
+              { label: "Original schedule", data: origData, borderColor: "#94a3b8", borderDash: [5, 3], backgroundColor: "transparent", tension: 0.2, pointRadius: 0 }
+            ]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: function (c) { return c.dataset.label + ": " + Utils.formatCurrency(c.raw); } } }
+            },
+            scales: { y: { beginAtZero: true, ticks: { callback: function (v) { return Utils.formatCompact(v); } } } }
+          }
+        });
+      }
+
+      function recalculate(e) {
+        if (e && e.type === "submit") e.preventDefault();
+        var v = getInputs();
+        var errs = validate(v);
+        if (errs.length) { errorBox.textContent = errs[0]; errorBox.classList.remove("hidden"); return; }
+        errorBox.classList.add("hidden");
+        saveInputs(v);
+        var r = Calc.prepayment(v.outstanding, v.rate, v.emi, v.extra);
+        renderResults(v, r);
+        renderChart(v, r);
+      }
+
+      document.getElementById("rate").addEventListener("input", function () { document.getElementById("rateDisplay").textContent = parseFloat(this.value).toFixed(2) + "%"; });
+      document.getElementById("themeToggle").addEventListener("click", function () { applyTheme(root.classList.contains("dark") ? "light" : "dark"); });
+      document.getElementById("resetBtn").addEventListener("click", function () {
+        localStorage.removeItem(storageKey); form.reset(); updateDisplays(); recalculate();
+      });
+      document.getElementById("shareBtn").addEventListener("click", function () {
+        var btn = this;
+        var p = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(lastResultText) : Promise.reject();
+        p.then(function () { btn.textContent = "Copied!"; setTimeout(function () { btn.textContent = "Copy"; }, 1500); })
+          .catch(function () { alert(lastResultText); });
+      });
+
+      form.addEventListener("submit", recalculate);
+      form.addEventListener("input", recalculate);
+
+      var savedTheme = localStorage.getItem("financeCalculatorsTheme");
+      applyTheme(savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+      restoreInputs();
+      recalculate();
+    })();
+  </script>
+</body>
+</html>

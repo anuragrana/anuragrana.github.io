@@ -1,0 +1,196 @@
+/* calc-engine.js – shared financial formula engine for Finance Calculators */
+
+var Utils = {
+  formatCurrency: function (value) {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency", currency: "INR", maximumFractionDigits: 0
+    }).format(Math.round(Number(value) || 0));
+  },
+
+  formatCompact: function (value) {
+    var v = Math.round(Number(value) || 0);
+    var sign = v < 0 ? "-" : "";
+    var abs = Math.abs(v);
+    if (abs >= 1e7) return sign + "₹" + (abs / 1e7).toFixed(2) + " Cr";
+    if (abs >= 1e5) return sign + "₹" + (abs / 1e5).toFixed(2) + " L";
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency", currency: "INR", maximumFractionDigits: 0
+    }).format(v);
+  },
+
+  formatYears: function (months) {
+    var y = Math.floor(months / 12);
+    var m = Math.round(months % 12);
+    if (m === 0) return y + " years";
+    if (y === 0) return m + " months";
+    return y + "y " + m + "m";
+  },
+
+  formatPercent: function (value, decimals) {
+    return (Number(value) || 0).toFixed(decimals !== undefined ? decimals : 2) + "%";
+  },
+
+  round: function (value, decimals) {
+    var factor = Math.pow(10, decimals || 0);
+    return Math.round((Number(value) || 0) * factor) / factor;
+  },
+
+  readNumber: function (id) {
+    return Number(document.getElementById(id).value);
+  },
+
+  validateRange: function (label, value, min, max) {
+    if (!Number.isFinite(value)) return label + " must be a valid number.";
+    if (value < min) return label + " must be at least " + min + ".";
+    if (value > max) return label + " must be at most " + max + ".";
+    return "";
+  }
+};
+
+var Calc = {
+  /* SIP future value */
+  sipFV: function (monthly, annualRate, years) {
+    var n = Math.round(years * 12);
+    var r = annualRate / 12 / 100;
+    if (n <= 0) return 0;
+    if (r === 0) return monthly * n;
+    return monthly * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+  },
+
+  /* Monthly SIP required to reach target */
+  sipRequired: function (target, annualRate, years) {
+    var n = Math.round(years * 12);
+    var r = annualRate / 12 / 100;
+    if (n <= 0) return 0;
+    if (r === 0) return target / n;
+    return target * r / ((Math.pow(1 + r, n) - 1) * (1 + r));
+  },
+
+  /* EMI */
+  emi: function (principal, annualRate, months) {
+    var r = annualRate / 12 / 100;
+    if (months <= 0) return 0;
+    if (r === 0) return principal / months;
+    var pow = Math.pow(1 + r, months);
+    return principal * r * pow / (pow - 1);
+  },
+
+  /* Full amortization schedule */
+  amortization: function (principal, annualRate, months) {
+    var r = annualRate / 12 / 100;
+    var emiAmt = Calc.emi(principal, annualRate, months);
+    var schedule = [];
+    var balance = principal;
+    for (var m = 1; m <= months; m++) {
+      var interest = balance * r;
+      var princ = emiAmt - interest;
+      balance = Math.max(0, balance - princ);
+      schedule.push({ month: m, emi: emiAmt, principal: princ, interest: interest, balance: balance });
+    }
+    return schedule;
+  },
+
+  /* CAGR % */
+  cagr: function (initial, final, years) {
+    if (initial <= 0 || years <= 0) return 0;
+    return (Math.pow(final / initial, 1 / years) - 1) * 100;
+  },
+
+  /* Lumpsum future value */
+  lumpsumFV: function (amount, cagrPct, years) {
+    return amount * Math.pow(1 + cagrPct / 100, years);
+  },
+
+  /* Inflation-adjusted future cost */
+  inflationFV: function (amount, inflationPct, years) {
+    return amount * Math.pow(1 + inflationPct / 100, years);
+  },
+
+  /* Step-up SIP corpus (month-by-month for accuracy) */
+  stepUpSipFV: function (monthly, stepUpPct, annualReturn, years) {
+    var r = annualReturn / 12 / 100;
+    var g = stepUpPct / 100;
+    var corpus = 0;
+    var n = Math.round(years * 12);
+    for (var m = 1; m <= n; m++) {
+      var yearIdx = Math.floor((m - 1) / 12);
+      corpus = corpus * (1 + r) + monthly * Math.pow(1 + g, yearIdx);
+    }
+    return corpus;
+  },
+
+  stepUpSipInvested: function (monthly, stepUpPct, years) {
+    var total = 0;
+    for (var y = 0; y < Math.round(years); y++) {
+      total += monthly * Math.pow(1 + stepUpPct / 100, y) * 12;
+    }
+    return total;
+  },
+
+  /* SWP longevity in months (exact formula) */
+  swpMonths: function (corpus, monthlyWithdrawal, annualReturn) {
+    if (monthlyWithdrawal <= 0) return Infinity;
+    var r = annualReturn / 12 / 100;
+    if (r === 0) return corpus / monthlyWithdrawal;
+    var ratio = corpus * r / monthlyWithdrawal;
+    if (ratio >= 1) return Infinity;
+    return -Math.log(1 - ratio) / Math.log(1 + r);
+  },
+
+  /* SWP balance after n months */
+  swpBalance: function (corpus, monthlyWithdrawal, annualReturn, months) {
+    var r = annualReturn / 12 / 100;
+    if (r === 0) return Math.max(0, corpus - monthlyWithdrawal * months);
+    var n = months;
+    return corpus * Math.pow(1 + r, n) - monthlyWithdrawal * ((Math.pow(1 + r, n) - 1) / r);
+  },
+
+  /* Loan prepayment analysis */
+  prepayment: function (outstanding, annualRate, existingEmi, extraPayment) {
+    var r = annualRate / 12 / 100;
+    function tenureMonths(P, emi, rate) {
+      if (rate === 0) return Math.ceil(P / emi);
+      if (emi <= P * rate) return Infinity;
+      return Math.ceil(-Math.log(1 - P * rate / emi) / Math.log(1 + rate));
+    }
+    function totalInterest(P, emi, rate, maxM) {
+      var bal = P, interest = 0;
+      for (var m = 0; m < maxM && bal > 0.5; m++) {
+        var intAmt = bal * rate;
+        interest += intAmt;
+        bal -= (emi - intAmt);
+      }
+      return interest;
+    }
+    var origMonths = tenureMonths(outstanding, existingEmi, r);
+    var newMonths = tenureMonths(outstanding, existingEmi + extraPayment, r);
+    if (!isFinite(origMonths) || origMonths > 600) return null;
+    var origInterest = totalInterest(outstanding, existingEmi, r, origMonths);
+    var newInterest = totalInterest(outstanding, existingEmi + extraPayment, r, newMonths);
+    return {
+      origMonths: origMonths,
+      newMonths: newMonths,
+      savedMonths: origMonths - newMonths,
+      interestSaved: origInterest - newInterest,
+      newPayoffDate: newMonths
+    };
+  },
+
+  /* FIRE corpus (real-return SWR method) */
+  fireCorpus: function (monthlyExpenses, annualReturn, inflationPct) {
+    var realReturn = Math.max(0.5, annualReturn - inflationPct);
+    return (monthlyExpenses * 12) / (realReturn / 100);
+  },
+
+  /* Months to reach FIRE target */
+  fireMonths: function (target, currentSavings, monthlyInvestment, annualReturn) {
+    var r = annualReturn / 12 / 100;
+    var balance = currentSavings;
+    if (balance >= target) return 0;
+    for (var m = 1; m <= 1200; m++) {
+      balance = balance * (1 + r) + monthlyInvestment;
+      if (balance >= target) return m;
+    }
+    return Infinity;
+  }
+};

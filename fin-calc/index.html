@@ -40,33 +40,152 @@
 
   <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
     <section class="mb-8 sm:mb-10">
-      
       <h1 class="max-w-3xl text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-5xl">Fast finance calculators for everyday planning.</h1>
       <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">
-        Compare tax-aware investment outcomes and estimate retirement readiness with lightweight calculators that open directly in any browser or Android WebView.
+        Instant calculations, Indian currency formatting, and mobile-first design. No sign-up, no ads — just the numbers you need.
       </p>
     </section>
 
-    <section class="grid gap-4 sm:grid-cols-2" aria-label="Available calculators">
-      <a href="fd-arbitrage-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
-        <div class="mb-5 flex items-start justify-between gap-4">
-          <span class="grid h-12 w-12 place-items-center rounded bg-teal-50 text-xl font-bold text-teal-800 dark:bg-teal-950 dark:text-teal-300">FD</span>
-          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Tax comparison</span>
-        </div>
-        <h2 class="text-xl font-semibold text-slate-950 dark:text-white">FD vs Arbitrage Fund Calculator</h2>
-        <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Compare post-tax maturity values between a fixed deposit and an arbitrage mutual fund.</p>
-        <span class="mt-5 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator <span aria-hidden="true" class="ml-1">→</span></span>
-      </a>
+    <section aria-label="Available calculators">
+      <h2 class="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Investments</h2>
+      <div class="mb-8 grid gap-4 sm:grid-cols-2">
 
-      <a href="retirement-corpus-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
-        <div class="mb-5 flex items-start justify-between gap-4">
-          <span class="grid h-12 w-12 place-items-center rounded bg-emerald-50 text-xl font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">RT</span>
-          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Goal planning</span>
-        </div>
-        <h2 class="text-xl font-semibold text-slate-950 dark:text-white">Retirement Corpus Calculator</h2>
-        <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Estimate inflation-adjusted expenses, target corpus, and required monthly SIP.</p>
-        <span class="mt-5 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator <span aria-hidden="true" class="ml-1">→</span></span>
-      </a>
+        <a href="sip-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-teal-50 text-lg font-bold text-teal-800 dark:bg-teal-950 dark:text-teal-300">SIP</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Investment planning</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">SIP Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">See how a fixed monthly investment grows with compounding returns.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+        <a href="lumpsum-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-violet-50 text-lg font-bold text-violet-800 dark:bg-violet-950 dark:text-violet-300">LS</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">One-time investment</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Lumpsum Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">See how a one-time investment compounds over years at a given CAGR.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+        <a href="step-up-sip-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-teal-50 text-lg font-bold text-teal-800 dark:bg-teal-950 dark:text-teal-300">S↑</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Growing investment</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Step-Up SIP Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">Grow your SIP by a % every year and see the dramatic corpus difference.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+        <a href="goal-sip-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-emerald-50 text-lg font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">GL</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Goal planning</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Goal-Based SIP Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">Find the monthly SIP needed to reach a goal — house, car, education, and more.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+      </div>
+
+      <h2 class="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Returns & Analysis</h2>
+      <div class="mb-8 grid gap-4 sm:grid-cols-2">
+
+        <a href="cagr-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-amber-50 text-lg font-bold text-amber-800 dark:bg-amber-950 dark:text-amber-300">CG</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Returns analysis</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">CAGR Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">Find the steady annual growth rate behind any investment's overall gain.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+        <a href="inflation-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-orange-50 text-lg font-bold text-orange-800 dark:bg-orange-950 dark:text-orange-300">IN</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Inflation impact</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Inflation Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">See how inflation erodes your money's purchasing power over time.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+        <a href="fd-arbitrage-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-teal-50 text-xl font-bold text-teal-800 dark:bg-teal-950 dark:text-teal-300">FD</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Tax comparison</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">FD vs Arbitrage Fund Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">Compare post-tax maturity values between a fixed deposit and an arbitrage mutual fund.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+      </div>
+
+      <h2 class="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Loans & Debt</h2>
+      <div class="mb-8 grid gap-4 sm:grid-cols-2">
+
+        <a href="emi-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-sky-50 text-lg font-bold text-sky-800 dark:bg-sky-950 dark:text-sky-300">EMI</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Loan planning</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">EMI Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">Calculate monthly EMI and see the full principal vs interest breakdown.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+        <a href="loan-prepayment-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-rose-50 text-lg font-bold text-rose-800 dark:bg-rose-950 dark:text-rose-300">LP</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Debt planning</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Loan Prepayment Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">See how much interest you save and months you cut by paying a little extra every month.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+      </div>
+
+      <h2 class="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Retirement & Freedom</h2>
+      <div class="grid gap-4 sm:grid-cols-2">
+
+        <a href="swp-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-sky-50 text-lg font-bold text-sky-800 dark:bg-sky-950 dark:text-sky-300">SWP</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Withdrawal planning</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">SWP Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">Find out how long your corpus lasts with a fixed monthly withdrawal.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+        <a href="retirement-corpus-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-emerald-50 text-xl font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">RT</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Goal planning</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Retirement Corpus Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">Estimate inflation-adjusted expenses, target corpus, and required monthly SIP.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+        <a href="fire-calculator.html" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-teal-700 dark:focus:ring-offset-slate-950">
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <span class="grid h-12 w-12 place-items-center rounded bg-emerald-50 text-lg font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">FI</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">Financial independence</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-950 dark:text-white">FIRE Calculator</h3>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600 dark:text-slate-300">Find your Financial Independence number and how many years you are away from it.</p>
+          <span class="mt-4 inline-flex items-center text-sm font-semibold text-teal-700 group-hover:text-teal-800 dark:text-teal-400">Open calculator →</span>
+        </a>
+
+      </div>
     </section>
   </main>
 
@@ -77,7 +196,6 @@
   </footer>
 
   <script>
-    // Keep the homepage independent and persist the preferred color scheme locally.
     (function () {
       var root = document.documentElement;
       var button = document.getElementById("themeToggle");
