@@ -213,44 +213,80 @@ var Calc = {
 
 /* PageSharer – screenshots the full calculator page (inputs + results) and shares/downloads it */
 var PageSharer = {
+  _SVG: '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share as Image',
+
   share: function () {
     var btn = document.getElementById("imgShareBtn");
-    if (btn) { btn.innerHTML = "Generating…"; btn.disabled = true; }
     var self = this;
+    if (btn) { btn.textContent = "Generating…"; btn.disabled = true; }
+
+    function restore() { if (btn) { btn.innerHTML = self._SVG; btn.disabled = false; } }
+
     function doCapture() {
-      var main = document.querySelector("main");
-      html2canvas(main, { scale: 2, useCORS: true, logging: false, backgroundColor: null }).then(function (canvas) {
-        if (btn) { btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share as Image'; btn.disabled = false; }
-        canvas.toBlob(function (blob) {
+      html2canvas(document.querySelector("main"), { scale: 2, useCORS: true, logging: false, backgroundColor: null })
+        .then(function (canvas) {
+          restore();
+          var dataUrl = canvas.toDataURL("image/png");
           var title = document.title.replace(/\s*\|.*$/, "").trim();
           var fname = title.replace(/\s+/g, "-").toLowerCase() + ".png";
-          var file = new File([blob], fname, { type: "image/png" });
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            navigator.share({ files: [file], title: title })
-              .catch(function (e) { if (e.name !== "AbortError") self._dl(blob, fname); });
-          } else { self._dl(blob, fname); }
-        }, "image/png");
-      }).catch(function () {
-        if (btn) { btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share as Image'; btn.disabled = false; }
-      });
+          canvas.toBlob(function (blob) {
+            var file = new File([blob], fname, { type: "image/png" });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              navigator.share({ files: [file], title: title })
+                .catch(function (e) { if (e.name !== "AbortError") self._showModal(dataUrl, fname); });
+            } else {
+              self._showModal(dataUrl, fname);
+            }
+          }, "image/png");
+        })
+        .catch(restore);
     }
+
     if (typeof html2canvas !== "undefined") {
       doCapture();
     } else {
       var s = document.createElement("script");
       s.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
       s.onload = doCapture;
-      s.onerror = function () { if (btn) { btn.innerHTML = "Share as Image"; btn.disabled = false; } };
+      s.onerror = restore;
       document.head.appendChild(s);
     }
   },
 
-  _dl: function (blob, fname) {
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement("a");
-    a.href = url; a.download = fname;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  _showModal: function (dataUrl, fname) {
+    var overlay = document.createElement("div");
+    overlay.style.cssText = "position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.88);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;";
+
+    var img = document.createElement("img");
+    img.src = dataUrl;
+    img.style.cssText = "max-width:100%;max-height:72vh;border-radius:8px;object-fit:contain;";
+    img.setAttribute("alt", "Calculator results");
+
+    /* hint shown on touch devices (WebView / mobile) */
+    var isTouchDevice = ("ontouchstart" in window) || navigator.maxTouchPoints > 0;
+    var hint = document.createElement("p");
+    hint.textContent = isTouchDevice ? "Long-press image → Save / Share" : "Right-click image to copy or save";
+    hint.style.cssText = "color:rgba(255,255,255,0.65);margin-top:12px;font-size:13px;text-align:center;font-family:sans-serif;";
+
+    var dlLink = document.createElement("a");
+    dlLink.href = dataUrl;
+    dlLink.download = fname;
+    dlLink.textContent = "Download PNG";
+    dlLink.style.cssText = "display:inline-block;margin-top:14px;background:#0f766e;color:#fff;padding:10px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;font-family:sans-serif;";
+
+    var closeBtn = document.createElement("button");
+    closeBtn.textContent = "Close";
+    closeBtn.style.cssText = "margin-top:10px;background:transparent;color:rgba(255,255,255,0.55);padding:8px 20px;border-radius:6px;font-size:13px;border:1px solid rgba(255,255,255,0.2);cursor:pointer;font-family:sans-serif;";
+
+    function close() { document.body.removeChild(overlay); }
+    closeBtn.onclick = close;
+    overlay.onclick = function (e) { if (e.target === overlay) close(); };
+
+    overlay.appendChild(img);
+    overlay.appendChild(hint);
+    overlay.appendChild(dlLink);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
   }
 };
 
