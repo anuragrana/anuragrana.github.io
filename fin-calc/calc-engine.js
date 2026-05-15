@@ -211,6 +211,49 @@ var Calc = {
   }
 };
 
+/* PageSharer – screenshots the full calculator page (inputs + results) and shares/downloads it */
+var PageSharer = {
+  share: function () {
+    var btn = document.getElementById("imgShareBtn");
+    if (btn) { btn.innerHTML = "Generating…"; btn.disabled = true; }
+    var self = this;
+    function doCapture() {
+      var main = document.querySelector("main");
+      html2canvas(main, { scale: 2, useCORS: true, logging: false, backgroundColor: null }).then(function (canvas) {
+        if (btn) { btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share as Image'; btn.disabled = false; }
+        canvas.toBlob(function (blob) {
+          var title = document.title.replace(/\s*\|.*$/, "").trim();
+          var fname = title.replace(/\s+/g, "-").toLowerCase() + ".png";
+          var file = new File([blob], fname, { type: "image/png" });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: title })
+              .catch(function (e) { if (e.name !== "AbortError") self._dl(blob, fname); });
+          } else { self._dl(blob, fname); }
+        }, "image/png");
+      }).catch(function () {
+        if (btn) { btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share as Image'; btn.disabled = false; }
+      });
+    }
+    if (typeof html2canvas !== "undefined") {
+      doCapture();
+    } else {
+      var s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+      s.onload = doCapture;
+      s.onerror = function () { if (btn) { btn.innerHTML = "Share as Image"; btn.disabled = false; } };
+      document.head.appendChild(s);
+    }
+  },
+
+  _dl: function (blob, fname) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = fname;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+};
+
 /* Stepper – wires up [data-step] buttons to their target inputs */
 var Stepper = {
   init: function (form) {

@@ -99,6 +99,8 @@
           <div class="h-48"><canvas id="mainChart" role="img" aria-label="Goal investment breakdown chart"></canvas></div>
           <div id="chartLegend" class="mt-3 space-y-2 border-t border-slate-100 pt-3 dark:border-slate-800"></div>
         </div>
+
+        <button id="imgShareBtn" type="button" class="w-full flex items-center justify-center gap-2 rounded bg-teal-700 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 active:scale-[0.98] disabled:opacity-60"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share as Image</button>
       </section>
     </div>
   </main>
@@ -243,6 +245,7 @@
 
       Stepper.init(form);
       Utils.initHints(form);
+      document.getElementById("imgShareBtn").addEventListener("click", function() { PageSharer.share(); });
       form.addEventListener("submit", recalculate);
       form.addEventListener("input", recalculate);
 
